@@ -44,9 +44,38 @@ body {
     top: 0px;
 }
 
-.code textarea{
+.source {
+    padding-left: 5px;
+    font-family: var(--font2);
+    background-color:white;
+    display: block;
     width:300px;
     height: 500px;
+}
+
+.source .comment {
+    color: green;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;  
+}
+.source .label {
+    font-weight: bold;
+}
+
+.source .line {
+    color: darkgrey;
+    font-weight: bold;
+    float: left;
+    width: 30px;
+}
+
+.source .current {
+    background-color: orange;
+}
+
+.source .break {
+    background-color: red;
 }
 
     .registers {
@@ -65,10 +94,13 @@ body {
         float: left;
         width: 30px
     }
+
     .register .value {
         display: block;
+        padding-right: 5px;
         width: var(--width2);
         float: left;
+        text-align: right;
     }
 
     .flags {

@@ -8,12 +8,23 @@
 </head>
 <body>
 
-   <div class="program">
+<div class="program">
   <div class="title">Program</div>
-  <div class="code">
-   <textarea></textarea>
+  <div class="source">
+    <div id="lin0" class="selectable"><span class='line' title="0x0000">0</span>LDR R0,.InputNum</div>
+    <div id="lin1" class="selectable"><span class='line' title="0x0004">1</span>LDR R1,.InputNum</div>
+    <div id="lin2" class="selectable current"><span class='line' title="0x0002">2</span>CMP R1,R0</div>
+    <div id="lin3" class="selectable"><span class='line' title="0x0008">3</span>BGT HIGHER</div>
+    <div id="lin4" class="selectable"><span class='line' title="0x000c">4</span>STR R0,.WriteSignedNum</div>
+    <div id="lin5" class="selectable"><span class='line' title="0x0010">5</span>B DONE</div>
+    <div id="lin6" class="label"><span class='line'></span>HIGHER:</div>
+    <div id="lin7" class="selectable break"><span class='line' title="0x0014">6</span>STR R1,.WriteSignedNum</div>
+    <div id="lin8" class="label"><span class='line'></span>DONE:</div>
+    <div id="lin9" class="selectable"><span class='line' title="0x0018">7</span>LDR R3,.Time</div>
+    <div id="lin10" class="selectable"><span class='line' title="0x001c">8</span>HALT</div>
+    <div id="lin11" class="comment"><span class='line'></span>// Input two numbers and output the higher </div>
   </div>
- </div>
+  </div>
  <div class="play Controls">
   <div class="Control Stop"></div>
   <div class="Control Pause"></div>
@@ -22,11 +33,24 @@
   <div class="Control Faster Step Active"></div>
  </div>
  <div id="registers" class="registers">
-   <div class="title">Registers</div>
-   <div class="register">
-     <div class="name">PC</div>
-     <div class="value hex" id="R15">0</div>
-    </div><div class="register"><div class="name">SP</div><div class="value hex" id="R14">&nbsp;         0</div></div><div class="register"><div class="name">R13</div><div class="value hex" id="R13">&nbsp;       800</div></div><div class="register"><div class="name">R12</div><div class="value hex" id="R12">&nbsp;         0</div></div><div class="register"><div class="name">R11</div><div class="value hex highlighted" id="R11">&nbsp;         0</div></div><div class="register"><div class="name">R10</div><div class="value hex" id="R10">&nbsp;         0</div></div><div class="register"><div class="name">R9</div><div class="value hex" id="R9">&nbsp;         0</div></div><div class="register"><div class="name">R8</div><div class="value hex" id="R8">&nbsp;         0</div></div><div class="register"><div class="name">R7</div><div class="value hex" id="R7">&nbsp;         0</div></div><div class="register"><div class="name">R6</div><div class="value hex" id="R6">&nbsp;         0</div></div><div class="register"><div class="name">R5</div><div class="value hex" id="R5">&nbsp;         0</div></div><div class="register"><div class="name">R4</div><div class="value hex" id="R4">&nbsp;         0</div></div><div class="register"><div class="name">R3</div><div class="value hex" id="R3">&nbsp;         0</div></div><div class="register"><div class="name">R2</div><div class="value hex" id="R2">&nbsp;         0</div></div><div class="register"><div class="name">R1</div><div class="value hex" id="R1">&nbsp;         0</div></div><div class="register"><div class="name">R0</div><div class="value hex" id="R0">&nbsp;         0</div></div></div>
+  <div class="title">Registers</div>
+    <div class="register"><div class="name">PC</div><div class="value hex" id="R15">0</div></div>
+    <div class="register"><div class="name">SP</div><div class="value hex" id="R14">0</div></div>
+    <div class="register"><div class="name">R13</div><div class="value hex" id="R13">800</div></div>
+    <div class="register"><div class="name">R12</div><div class="value hex" id="R12">0</div></div>
+    <div class="register"><div class="name">R11</div><div class="value hex" id="R11">0</div></div>
+    <div class="register"><div class="name">R10</div><div class="value hex" id="R10">0</div></div>
+    <div class="register"><div class="name">R9</div><div class="value hex" id="R9">0</div></div>
+    <div class="register"><div class="name">R8</div><div class="value hex" id="R8">0</div></div>
+    <div class="register"><div class="name">R7</div><div class="value hex" id="R7">0</div></div>
+    <div class="register"><div class="name">R6</div><div class="value hex" id="R6">0</div></div>
+    <div class="register"><div class="name">R5</div><div class="value hex" id="R5">0</div></div>
+    <div class="register"><div class="name">R4</div><div class="value hex" id="R4">0</div></div>
+    <div class="register"><div class="name">R3</div><div class="value hex" id="R3">0</div></div>
+    <div class="register"><div class="name">R2</div><div class="value hex" id="R2">0</div></div>
+    <div class="register"><div class="name">R1</div><div class="value hex" id="R1">0</div></div>
+    <div class="register"><div class="name">R0</div><div class="value hex" id="R0">0</div></div>
+  </div>
  <div class="flags">
   <div class="title">Status flags</div>
   <div class="name">NZCV</div>
