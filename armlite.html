@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="utf-8" />
+ <title></title>
+ <link href="armlite.css" rel="stylesheet">
+</head>
+<body>
+
+   <div class="program">
+  <div class="title">Program</div>
+  <div class="code">
+   <textarea></textarea>
+  </div>
+ </div>
+ <div class="play Controls">
+  <div class="Control Stop"></div>
+  <div class="Control Pause"></div>
+  <div class="Control Play Active"></div>
+  <div class="Control Slower"></div>
+  <div class="Control Faster Step Active"></div>
+ </div>
+ <div id="registers" class="registers">
+   <div class="title">Registers</div>
+   <div class="register">
+     <div class="name">PC</div>
+     <div class="value hex" id="R15">0</div>
+    </div><div class="register"><div class="name">SP</div><div class="value hex" id="R14">&nbsp;         0</div></div><div class="register"><div class="name">R13</div><div class="value hex" id="R13">&nbsp;       800</div></div><div class="register"><div class="name">R12</div><div class="value hex" id="R12">&nbsp;         0</div></div><div class="register"><div class="name">R11</div><div class="value hex highlighted" id="R11">&nbsp;         0</div></div><div class="register"><div class="name">R10</div><div class="value hex" id="R10">&nbsp;         0</div></div><div class="register"><div class="name">R9</div><div class="value hex" id="R9">&nbsp;         0</div></div><div class="register"><div class="name">R8</div><div class="value hex" id="R8">&nbsp;         0</div></div><div class="register"><div class="name">R7</div><div class="value hex" id="R7">&nbsp;         0</div></div><div class="register"><div class="name">R6</div><div class="value hex" id="R6">&nbsp;         0</div></div><div class="register"><div class="name">R5</div><div class="value hex" id="R5">&nbsp;         0</div></div><div class="register"><div class="name">R4</div><div class="value hex" id="R4">&nbsp;         0</div></div><div class="register"><div class="name">R3</div><div class="value hex" id="R3">&nbsp;         0</div></div><div class="register"><div class="name">R2</div><div class="value hex" id="R2">&nbsp;         0</div></div><div class="register"><div class="name">R1</div><div class="value hex" id="R1">&nbsp;         0</div></div><div class="register"><div class="name">R0</div><div class="value hex" id="R0">&nbsp;         0</div></div></div>
+ <div class="flags">
+  <div class="title">Status flags</div>
+  <div class="name">NZCV</div>
+  <div class="value" id="flags">0100</div>
+ </div>
+ <div class="instruction">
+  <div class="title">Instruction Decode</div>
+  <div class="value" id="ir">e51f0100</div>
+  <div class="value" id="ur">LDR</div>
+ </div>
+ <div class="Other Controls">
+  <div class="Control Interrupt Pin"></div>
+  <div class="Options"></div>
+  <div class="User View"></div>
+ </div>
+ <img class="pixel-screen">
+ <div class="char-screen">Characters</div>
+
+ <textarea class="console">Hello World!
+Stack Overflow Exception
+Halted on Line 15</textarea>
+<div class="input"></div>
+ <div class="memory hex">
+  <div class="title">Memory</div>
+  <div class="Paging"></div>
+  <div class="table">
+   <div class="header">
+    <div class="page"><div class="number">00</div></div>
+    <div class="address">0x0</div>
+    <div class="address">0x4</div>
+    <div class="address">0x8</div>
+    <div class="address">0xc</div>
+   </div>
+   <!--Each address has an id as now  (not shown for most below) -->
+   <div class="row"><div class="address" id="a0">0x000</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address" id="a1">0x001</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x002</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x003</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x004</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x005</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x006</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x007</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x008</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x009</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x00a</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x00b</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x00c</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x00d</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x00e</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x00f</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x010</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x011</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x012</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x013</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x014</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x015</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x016</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x017</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x018</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x019</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x01a</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x01b</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x01c</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x01d</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x01e</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+   <div class="row"><div class="address">0x01f</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+  </div>
+ <div class="links"></div>
+ <div class="credits">ARMLite Simulator. (C) Peter Higginson 2018</div>
+</body>
+</html>

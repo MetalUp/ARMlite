@@ -1,0 +1,179 @@
+﻿:root {
+     --col1: 20px;
+     --col2: 350px;
+     --col3: 500px;
+     --col4: 700px;
+     --font1: Segoe UI,Open Sans,Verdana,Arial,Helvetica,sans-serif;
+     --font-size1:16pt;
+     --font2: monospace;
+     --font-size2: 12pt;
+     --width1: 40px;
+     --width2: 80px;
+     --width3: 320px;
+     --width4: 600px;
+}
+
+body {
+    background-color: rgb(68, 114, 196);
+
+}
+.title {
+    display: block;
+    font-family: var(--font1);
+    font-size: var(--font-size1);
+    color: white;
+    padding-bottom: 10px;
+}
+
+.value {
+    display: block;
+    font-family: var(--font2);
+    color: black;
+    background-color: white;
+}
+
+.value.highlighted {
+    background-color: orange;
+}
+
+.program {
+    display: block;
+    width: 300px;
+    position: absolute;
+    left: var(--col1);
+    top: 0px;
+}
+
+.code textarea{
+    width:300px;
+    height: 500px;
+}
+
+    .registers {
+        display: block;
+        position: absolute;
+        left: var(--col2);
+        top: 0px;
+    }
+    .register {
+        display: block;
+ 
+    }
+    .register .name {
+        font-family: var(--font2);
+        color: white;
+        float: left;
+        width: 30px
+    }
+    .register .value {
+        display: block;
+        width: var(--width2);
+        float: left;
+    }
+
+    .flags {
+        display: block;
+        position: absolute;
+        left: var(--col3);
+        top: 0px;
+    }
+    .flags .name, .flags .value {
+        letter-spacing: 2px;
+        font-family: var(--font2);
+        padding-left:2px;
+        padding-right:2px;
+        display: inline;
+    }
+    .flags .name {
+        display: block;
+        color: white;
+     }
+
+     .instruction {
+         display: block;
+         position: absolute;
+         width: var(--width2);
+         top: 80px;
+         left: var(--col3); 
+     }
+ 
+.pixel-screen, .char-screen, .console, .input {
+    position: absolute;
+    left: var(--col2);
+    display: block;
+    background-color: white;
+    width: var(--width3);
+    color: black;
+    font-family: var(--font2);
+}
+
+.pixel-screen, .char-screen {
+top: 300px;
+height: 200px;
+}
+
+.console {
+  top: 520px;
+  height: 60px;
+}
+
+.input {
+    top: 600px;
+    height: 20px;
+  }
+
+.memory {
+    display: block;
+    width: calc(var(--width2)*4+var(--width1));
+    position: absolute;
+    top: 0px;
+    left: 700px;
+}
+.address, .page .number {
+    display: block;
+color: white;
+font-family: monospace;
+float: left;
+}
+
+.row .address {
+    width: var(--width1);
+}
+
+.header .address, .word {
+    font-family: monospace;
+    width: var(--width2);
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: right;
+    float: left;
+}
+.page {
+    display: block;
+
+}
+.page .number {
+    color: black;
+    background: white;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 12px;
+    margin-right:8px;
+}
+.table, .row, .header,  {
+    display: block;
+}
+
+.word {
+    color: black;
+    background: white;
+}
+
+.credits {
+    display: block;
+    position: absolute;
+    top: 600px;
+    font-family: var(--font1);
+    font-size: 10pt;
+    color: white;
+}
