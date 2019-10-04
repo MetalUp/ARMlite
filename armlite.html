@@ -1,93 +1,252 @@
-<!DOCTYPE html>
-<!-- saved from url=(0049)http://www.peterhigginson.co.uk/xx/armlite_1.html -->
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><script type="text/javascript">window["_gaUserPrefs"] = { ioo : function() { return true; } }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
- 
- <title>ARMlite Assembly Language Simulator by Peter Higginson</title>
- <meta name="copyright" content="© 2019 Peter Higginson and Richard Pawson">
- <link href="./armlite_files/armlite.css" rel="stylesheet">
- <script src="./armlite_files/routines.js.download"></script>
- <script src="./armlite_files/css_subs.js.download"></script>
- <script src="./armlite_files/main.js.download"></script>
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+ <meta charset="utf-8" />
+ <title></title>
+ <link href="armlite.css" rel="stylesheet">
 </head>
-<body id="xxbody" onresize="getDimensions()" onload="startIt()" onkeydown="keyDown(event)" onkeyup="keyUp(event)">
+<body>
+
   <div class="program edit">
     <div class="title">Program</div>
-    <div class="source" id="program" style="overflow: auto; white-space: nowrap;"><div id="lin0" class="selectable" style="background: white;"><span class="line">&nbsp;&nbsp;0|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV R4,#250</div><div id="lin1" class="selectable" style="background: yellow;"><span class="line">&nbsp;&nbsp;1|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV R3,#200</div><div id="lin2" class="selectable"><span class="line">&nbsp;&nbsp;2|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD R4,R4,#255</div><div id="lin3" class="selectable"><span class="line">&nbsp;&nbsp;3|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB R3,R3,#100</div><div id="lin4" class="selectable"><span class="line">&nbsp;&nbsp;4|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMP R3,#100</div><div id="lin5" class="selectable"><span class="line">&nbsp;&nbsp;5|</span>X1:</div><div id="lin6" class="selectable"><span class="line">&nbsp;&nbsp;6|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BNE X1</div><div id="lin7" class="selectable"><span class="line">&nbsp;&nbsp;7|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEQ X2</div><div id="lin8" class="selectable"><span class="line">&nbsp;&nbsp;8|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B X1</div><div id="lin9" class="selectable"><span class="line">&nbsp;&nbsp;9|</span>X2:</div><div id="lin10" class="selectable"><span class="line">&nbsp;10|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ADD R5,R4,R3 // 605 0x25D @line 8</div><div id="lin11" class="selectable"><span class="line">&nbsp;11|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SUB R6,R5,R3 // 505 0x1F9</div><div id="lin12" class="selectable"><span class="line">&nbsp;12|</span>X3:</div><div id="lin13" class="selectable"><span class="line">&nbsp;13|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BNE X3 // test that SUB sets flags or not</div><div id="lin14" class="selectable"><span class="line">&nbsp;14|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MOV R0,#0xFF</div><div id="lin15" class="selectable"><span class="line">&nbsp;15|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;LSR R7,R5,#4 // 37 0x25</div><div id="lin16" class="selectable"><span class="line">&nbsp;16|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND R1,R7,R3 // 0x24</div><div id="lin17" class="selectable"><span class="line">&nbsp;17|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND R1,R1,#4 // 4</div><div id="lin18" class="selectable"><span class="line">&nbsp;18|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EOR R1,R1,#0x35 // 0x31</div><div id="lin19" class="selectable"><span class="line">&nbsp;19|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ORR R0,R1,R7 //0x35 @line16</div><div id="lin20" class="selectable"><span class="line">&nbsp;20|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;AND R0, R0, #32 // test extra spaces</div><div id="lin21" class="selectable"><span class="line">&nbsp;21|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMP R0, #33</div><div id="lin22" class="selectable"><span class="line">&nbsp;22|</span>X4:</div><div id="lin23" class="selectable"><span class="line">&nbsp;23|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BEQ X4</div><div id="lin24" class="selectable"><span class="line">&nbsp;24|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CMP R5, R6</div><div id="lin25" class="selectable"><span class="line">&nbsp;25|</span>X5:</div><div id="lin26" class="selectable"><span class="line">&nbsp;26|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BLT X5</div><div id="lin27" class="selectable"><span class="line">&nbsp;27|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BGT X6</div><div id="lin28" class="selectable"><span class="line">&nbsp;28|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B X5</div><div id="lin29" class="selectable"><span class="line">&nbsp;29|</span>X6:</div><div id="lin30" class="selectable"><span class="line">&nbsp;30|</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HALT</div></div>
-    <div>
-      <div id="load"><input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off" style="display:none;"><button id="load" onclick="document.getElementById(&#39;read-input&#39;).click()">Load</button></div>
-      <button id="save" onclick="">Save</button>
-      <button id="edit" onclick="openProgram()">Edit</button>
-      <button id="submit" onclick="programSubmit()">Submit</button>
-      <button id="revert" onclick="programCancel()">Revert</button>
+    <div class="source" id="program">
+      <div id="lin0" class="selectable"><span class='line' title="0x0000">0|</span>LDR R0,.InputNum</div>
+      <div id="lin1" class="selectable"><span class='line' title="0x0004">1|</span>LDR R1,.InputNum</div>
+      <div id="lin2" class="selectable current"><span class='line' title="0x0002">2|</span>CMP R1,R0</div>
+      <div id="lin3" class="selectable"><span class='line' title="0x0008">3|</span>BGT HIGHER</div>
+      <div id="lin4" class="selectable"><span class='line' title="0x000c">4|</span>STR R0,.WriteSignedNum</div>
+      <div id="lin5" class="selectable"><span class='line' title="0x0010">5|</span>B DONE</div>
+      <div id="lin6" class="label"><span class='line'></span>HIGHER:</div>
+      <div id="lin7" class="selectable break"><span class='line' title="0x0014">6|</span>STR R1,.WriteSignedNum</div>
+      <div id="lin8" class="label"><span class='line'></span>DONE:</div>
+      <div id="lin9" class="selectable"><span class='line' title="0x0018">7|</span>LDR R3,.Time</div>
+      <div id="lin10" class="selectable"><span class='line' title="0x001c">8|</span>HALT</div>
+      <div id="lin11" class="comment"><span class='line'></span>// Input two numbers and output the higher </div>
     </div>
-  <div class="run controls">
-    <button type="submit" id="run" title="Run" onclick="run()"><img src="./armlite_files/Run.png"></button>
-    <button type="submit" id="pause" title="Pause" onclick="stop()"><img src="./armlite_files/Pause.png"></button>
-    <button type="submit" id="step" title="Step" onclick="step3()"><img src="./armlite_files/Step.png"></button>
-    <button type="submit" id="slow" title="Slow" onclick="run_slow()"><img src="./armlite_files/Slow.png"></button>
-	<!-- stop is what reset was before (and pause what stop was) -->
-    <button type="submit" id="stop" title="Stop" onclick="reset1()"><img src="./armlite_files/Stop.png"></button>
-  </div>
+    <div class="controls">
+      <button id="load">Load</button>
+      <button  id="save">Save</button>
+      <button  id="edit">Edit</button>
+      <button  id="submit">Submit</button>
+      <button  id="revert">Revert</button>
+    </div>
 </div>
+  <div class="processor">
+    <div class="title">Processor</div>
   <div id="registers" class="registers">
-    <div class="title">Registers</div>
-      <div class="register"><div class="name">PC</div><div class="value signed" id="R15">8</div></div>
-      <div class="register"><div class="name">LR</div><div class="value signed" id="R14">0</div></div>
-      <div class="register"><div class="name">SP</div><div class="value signed" id="R13">65536</div></div>
-      <div class="register"><div class="name">R12</div><div class="value signed" id="R12">0</div></div>
-      <div class="register"><div class="name">R11</div><div class="value signed" id="R11">0</div></div>
-      <div class="register"><div class="name">R10</div><div class="value signed" id="R10">0</div></div>
-      <div class="register"><div class="name">R9</div><div class="value signed" id="R9">0</div></div>
-      <div class="register"><div class="name">R8</div><div class="value signed" id="R8">0</div></div>
-      <div class="register"><div class="name">R7</div><div class="value signed" id="R7">0</div></div>
-      <div class="register"><div class="name">R6</div><div class="value signed" id="R6">0</div></div>
-      <div class="register"><div class="name">R5</div><div class="value signed" id="R5">0</div></div>
-      <div class="register"><div class="name">R4</div><div class="value signed" id="R4">250</div></div>
-      <div class="register"><div class="name">R3</div><div class="value signed" id="R3">200</div></div>
-      <div class="register"><div class="name">R2</div><div class="value signed" id="R2">0</div></div>
-      <div class="register"><div class="name">R1</div><div class="value signed" id="R1">0</div></div>
-      <div class="register"><div class="name">R0</div><div class="value signed" id="R0">0</div></div>
+      <div class="register"><div class="name">PC</div><div class="value hex" id="R15">0</div></div>
+      <div class="register"><div class="name">LR</div><div class="value hex" id="R14">0</div></div>
+      <div class="register"><div class="name">SP</div><div class="value hex" id="R13">800</div></div>
+      <div class="register"><div class="name">R12</div><div class="value hex" id="R12">0</div></div>
+      <div class="register"><div class="name">R11</div><div class="value hex" id="R11">0</div></div>
+      <div class="register"><div class="name">R10</div><div class="value hex" id="R10">0</div></div>
+      <div class="register"><div class="name">R9</div><div class="value hex" id="R9">0</div></div>
+      <div class="register"><div class="name">R8</div><div class="value hex" id="R8">0</div></div>
+      <div class="register"><div class="name">R7</div><div class="value hex" id="R7">0</div></div>
+      <div class="register"><div class="name">R6</div><div class="value hex" id="R6">0</div></div>
+      <div class="register"><div class="name">R5</div><div class="value hex" id="R5">0</div></div>
+      <div class="register"><div class="name">R4</div><div class="value hex" id="R4">0</div></div>
+      <div class="register"><div class="name">R3</div><div class="value hex" id="R3">0</div></div>
+      <div class="register"><div class="name">R2</div><div class="value hex" id="R2">0</div></div>
+      <div class="register"><div class="name">R1</div><div class="value hex" id="R1">0</div></div>
+      <div class="register"><div class="name">R0</div><div class="value hex" id="R0">0</div></div>
   </div>
  <div class="flags">
-  <div class="title">Status flags</div>
+  <div class="title">Flags</div>
   <div class="name">NZCV</div>
-  <div class="value" id="flags">0000</div>
+  <div class="value" id="flags">0100</div>
  </div>
  <div class="instruction">
-  <div class="title">Instruction Decode</div>
-  <div class="value" id="ir">e3a030c8</div>
-  <div class="value" id="ur">MOV Rd,#im</div>
+  <div class="title">Decode</div>
+  <div class="values">
+  <div class="value" id="ir">e51f0100</div>
+  <div class="value" id="ur">LDR</div>
+  </div>
  </div>
- <div class="other controls">
-    <button type="submit" id="irq" title="Interrupt" onclick="iclick()"><img src="./armlite_files/Interrupt.png"></button>
+ <div class="counter">
+  <div class="value" id="counter">123456789012345</div>
+  <div class="title">Count</div>
+</div>
+ <div class="controls">
+  <button type="submit" id="run" title="Run"><img src="images/Run.png"></button>
+  <button type="submit" id="pause" title="Pause"><img src="images/Pause.png"></button>
+  <button type="submit" id="stop" title="Stop"><img src="images/Stop.png"></button>
+  <button type="submit" id="slow" title="Slow"><img src="images/Slow.png"></button>
+  <button type="submit" id="step" title="Step"><img src="images/Step.png"></button>
+  <button type="submit" id="irq" title="Interrupt"><img src="images/Interrupt.png"></button>
  </div>
- <img class="pixel-screen">
- <div class="char-screen">Characters</div>
-
- <textarea class="console" id="console">Done instruction MOV Rd,#im at line 1</textarea>
-  <div class="input"></div>
+ <div class="io">
+ <textarea class="console" id ="console">Hello World!
+    Hello World!
+    Hello World!
+Stack Overflow Exception
+Halted on Line 15</textarea>
+  <input class="input" id="input" placeholder="Waiting for input ...">
+  <div class="pixels" id="pixels">
+      <div id="p0000" style="background-color: #000000"></div>
+      <div id="p0001" style="background-color: #ff0000"></div>
+      <div id="p0002" style="background-color: blue"></div>
+      <div id="" style="background-color:  white"></div>
+      <div id="" style="background-color: white"></div>
+      <div id="" style="background-color: white"></div>
+      <div id="" style="background-color: white"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #0000ff"></div>
+      <div id="" style="background-color: #00ff00"></div>
+      <div id="" style="background-color: #000000"></div>
+      <div id="" style="background-color: #ff0000"></div>
+    </div>
+  <div class="chars"id="chars">
+      <div id="c000"></div>
+      <div id="c001"></div>
+      <div id="c002">H</div>
+      <div id="c003">e</div>
+      <div id="c004">l</div>
+      <div id="c005">l</div>
+      <div id="c006">o</div>
+      <div id="c007"></div>
+      <div id="c008"></div>
+      <div id="c009"></div>
+      <div id="c010"></div>
+      <div id="c011"></div>
+      <div id="c012">H</div>
+      <div id="c013">e</div>
+      <div id="c014">l</div>
+      <div id="c015">l</div>
+      <div id="c016">o</div>
+      <div id="c017"></div>
+      <div id="c018"></div>
+      <div id="c019"></div>
+      <div id="c020"></div>
+      <div id="c021"></div>
+      <div id="c022">H</div>
+      <div id="c023">e</div>
+      <div id="c024">l</div>
+      <div id="c025">l</div>
+      <div id="c026">o</div>
+      <div id="c027"></div>
+      <div id="c028"></div>
+      <div id="c029"></div>
+      <div id="c030"></div>
+      <div id="c031">!</div>
+      <div id="c032">H</div>
+      <div id="c033">e</div>
+      <div id="c034">l</div>
+      <div id="c035">l</div>
+      <div id="c036">o</div>
+      <div id="c037"></div>
+      <div id="c038"></div>
+      <div id="c039"></div>
+  </div>
+</div>
+ </div>
   <div class="memory hex">
     <div class="title">Memory</div>
     <div class="Paging"></div>
     <div class="table">
       <div class="header">
-        <div class="page"><div class="number" id="page">00</div></div>
+        <div class="page"><div class="number">00</div></div>
         <div class="address">0x0</div>
         <div class="address">0x4</div>
         <div class="address">0x8</div>
         <div class="address">0xc</div>
       </div>
-	  <div id="memory"><div class="row"><div class="address" id="meml0">0x000</div><div class="word" id="a0" onclick="openAddress(this)"> -476036870</div><div class="word" id="a1" onclick="openAddress(this)"> -476041016</div><div class="word" id="a2" onclick="openAddress(this)"> -494649089</div><div class="word" id="a3" onclick="openAddress(this)"> -498913180</div></div><div class="row"><div class="address" id="meml1">0x001</div><div class="word" id="a4" onclick="openAddress(this)"> -481099676</div><div class="word" id="a5" onclick="openAddress(this)">&nbsp; 452984830</div><div class="word" id="a6" onclick="openAddress(this)">&nbsp; 167772160</div><div class="word" id="a7" onclick="openAddress(this)"> -352321540</div></div><div class="row"><div class="address" id="meml2">0x002</div><div class="word" id="a8" onclick="openAddress(this)"> -528199677</div><div class="word" id="a9" onclick="openAddress(this)"> -532324349</div><div class="word" id="a10" onclick="openAddress(this)">&nbsp; 452984830</div><div class="word" id="a11" onclick="openAddress(this)"> -476053249</div></div><div class="row"><div class="address" id="meml3">0x003</div><div class="word" id="a12" onclick="openAddress(this)"> -509578715</div><div class="word" id="a13" onclick="openAddress(this)"> -536408061</div><div class="word" id="a14" onclick="openAddress(this)"> -503246844</div><div class="word" id="a15" onclick="openAddress(this)"> -502198219</div></div><div class="row"><div class="address" id="meml4">0x004</div><div class="word" id="a16" onclick="openAddress(this)"> -511639545</div><div class="word" id="a17" onclick="openAddress(this)"> -503316448</div><div class="word" id="a18" onclick="openAddress(this)"> -481296351</div><div class="word" id="a19" onclick="openAddress(this)">&nbsp; 184549374</div></div><div class="row"><div class="address" id="meml5">0x005</div><div class="word" id="a20" onclick="openAddress(this)"> -514523130</div><div class="word" id="a21" onclick="openAddress(this)">-1157627906</div><div class="word" id="a22" onclick="openAddress(this)"> -905969664</div><div class="word" id="a23" onclick="openAddress(this)"> -352321540</div></div><div class="row"><div class="address" id="meml6">0x006</div><div class="word" id="a24" onclick="openAddress(this)"> -520093584</div><div class="word" id="a25" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a26" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a27" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml7">0x007</div><div class="word" id="a28" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a29" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a30" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a31" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml8">0x008</div><div class="word" id="a32" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a33" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a34" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a35" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml9">0x009</div><div class="word" id="a36" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a37" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a38" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a39" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml10">0x00a</div><div class="word" id="a40" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a41" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a42" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a43" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml11">0x00b</div><div class="word" id="a44" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a45" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a46" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a47" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml12">0x00c</div><div class="word" id="a48" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a49" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a50" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a51" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml13">0x00d</div><div class="word" id="a52" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a53" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a54" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a55" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml14">0x00e</div><div class="word" id="a56" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a57" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a58" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a59" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml15">0x00f</div><div class="word" id="a60" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a61" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a62" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a63" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml16">0x010</div><div class="word" id="a64" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a65" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a66" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a67" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml17">0x011</div><div class="word" id="a68" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a69" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a70" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a71" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml18">0x012</div><div class="word" id="a72" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a73" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a74" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a75" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml19">0x013</div><div class="word" id="a76" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a77" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a78" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a79" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml20">0x014</div><div class="word" id="a80" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a81" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a82" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a83" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml21">0x015</div><div class="word" id="a84" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a85" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a86" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a87" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml22">0x016</div><div class="word" id="a88" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a89" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a90" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a91" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml23">0x017</div><div class="word" id="a92" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a93" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a94" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a95" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml24">0x018</div><div class="word" id="a96" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a97" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a98" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a99" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml25">0x019</div><div class="word" id="a100" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a101" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a102" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a103" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml26">0x01a</div><div class="word" id="a104" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a105" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a106" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a107" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml27">0x01b</div><div class="word" id="a108" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a109" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a110" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a111" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml28">0x01c</div><div class="word" id="a112" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a113" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a114" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a115" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml29">0x01d</div><div class="word" id="a116" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a117" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a118" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a119" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml30">0x01e</div><div class="word" id="a120" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a121" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a122" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a123" onclick="openAddress(this)">&nbsp;         0</div></div><div class="row"><div class="address" id="meml31">0x01f</div><div class="word" id="a124" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a125" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a126" onclick="openAddress(this)">&nbsp;         0</div><div class="word" id="a127" onclick="openAddress(this)">&nbsp;         0</div></div></div>
+      <!--Each address has an id as now  (not shown for most below) -->
+      <div class="row"><div class="address" id="a0">0x000</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address" id="a1">0x001</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x002</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x003</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x004</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x005</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x006</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x007</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x008</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x009</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x00a</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x00b</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x00c</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x00d</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x00e</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x00f</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x010</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x011</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x012</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x013</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x014</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x015</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x016</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x017</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x018</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x019</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x01a</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x01b</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x01c</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x01d</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x01e</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
+      <div class="row"><div class="address">0x01f</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div><div class="word" id="xx">0x00ff67a8</div></div>
     </div>
-    <button id="clear" title="Clear Memory">Clear</button>
-    <button id="config">Config</button>
-
-    <div class="credits">    
-      ARMLite Simulator © Peter Higginson 2019
-      <a id="help" href="http://www.peterhigginson.co.uk/xx/armlite_1.html">About</a>
-      <a id="help" href="http://www.peterhigginson.co.uk/xx/armlite_1.html">Help</a>
+    <button class="clear" id="clear" title="Clear Memory">Clear</button>
+    <div class="links">
+        <a id="help" href="">About</a>
+        <a id="help" href="">Help</a></p>
+    </div>
+    <div class="credits">     
+      ARMLite Simulator     &copy; Peter Higginson 2019
     </div>
   </div>
-<!-- LATER PIWIK HERE -->
-
-<div id="input" style="position: absolute; left: 270px; top: 560px; color: black; font-size: 16px;"></div></body></html>
+</body>
+</html>

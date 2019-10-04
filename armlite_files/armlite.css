@@ -1,7 +1,7 @@
 ﻿:root {
      --col1: 20px;
      --col2: 350px;
-     --col3: 500px;
+     --col3: 480px;
      --col4: 700px;
      --font1: Segoe UI,Open Sans,Verdana,Arial,Helvetica,sans-serif;
      --font-size1:16pt;
@@ -12,17 +12,33 @@
      --width3: 320px;
      --width4: 600px;
      --color1:  rgb(68, 114, 196);
+     --pixelSize: 5px;
+     --charSize: 10px;
 }
 
-body {
+body{
+
     background-color: var(--color1);
+    --displayProgram: block;
 }
+
+body.profile1 {
+    --displayProgram: none;
+    --displayProgram: none;
+}
+body.profile2 {
+    --displayProgram: block;
+}
+
 .title {
     display: block;
     font-family: var(--font1);
     font-size: var(--font-size1);
     color: white;
     padding-bottom: 10px;
+}
+.program > .title, .processor > .title, .memory > .title {
+    text-align: center;
 }
 
 .value {
@@ -37,14 +53,18 @@ body {
 }
 
 .program {
-    display: block;
+    display: var(--displayProgram);
     width: 300px;
     position: absolute;
     left: var(--col1);
     top: 0px;
 }
 
-button  {
+.program .controls {
+    display: block;
+    margin-top: 10px;;
+}
+.program button, button#clear  {
     border: 2px;
     border-style: solid;
     border-color: var(--color1);
@@ -54,10 +74,14 @@ button  {
     background-color: white;
     font-family: var(--font1);
     font-size: var(--font-size1);
-    margin: 5px 5px 10px 0px;
+    margin-right: 10px;
     padding: 0px 5px 0px 5px;
 }
- button:hover {
+.program button:last-child {
+    margin-right: 0px;
+    padding-right: 3px;
+}
+ button:hover, button#clear:hover {
     border-color: white;
 }
 .edit #edit {
@@ -72,33 +96,7 @@ button  {
 .program.edit #edit {
     display: none;
 }
-.run.controls {
-    display: block;
-    position: absolute;
-    top: 580px;
-}
-.other.controls {
-    display: block;
-    position: absolute;
-    top: 200px;
-    left: 500px;
-}
-.controls button {
-    border: 0px;
-    padding: 0px;
-    width: 55px;
-    height: 55px;
-}
-.controls button img {
-    border: 1px;
-    border-style: solid;
-    border-color: var(--color1);
-    width: 55px;
-    height: 55px;
-}
-.controls button img:hover { 
-    border-color: white;
-}
+
 
 
 .source {
@@ -106,8 +104,7 @@ button  {
     font-family: var(--font2);
     background-color:white;
     display: block;
-    width:300px;
-    height: 500px;
+    height: 580px;
 }
 
 .source .comment {
@@ -134,16 +131,28 @@ button  {
 .source .break {
     background-color: red;
 }
+.processor {
+    display: block;
+    width: 300px;
+    position: absolute;
+    left: var(--col2);
+    top: 0px;
+    height: 100%;
+}
 
+.processor .title {
+    display: block;
+}
     .registers {
         display: block;
         position: absolute;
-        left: var(--col2);
-        top: 0px;
+    }
+    .registers .title {
+        font-size: var(--font-size2);
     }
     .register {
         display: block;
- 
+        width: 120px;
     }
     .register .name {
         font-family: var(--font2);
@@ -163,10 +172,20 @@ button  {
     .flags {
         display: block;
         position: absolute;
-        left: var(--col3);
-        top: 0px;
+        top: 240px;
+        left: 130px;
     }
+    .flags .title {
+        font-size: var(--font-size2);
+        position: absolute;
+        top: 13px;
+        width: 100px;
+    }
+
+
     .flags .name, .flags .value {
+        position: absolute;
+        left: 80px;
         letter-spacing: 2px;
         font-family: var(--font2);
         padding-left:2px;
@@ -174,41 +193,129 @@ button  {
         display: inline;
     }
     .flags .name {
+        top: 5px;
         display: block;
         color: white;
+     }
+
+     .flags .value {
+        top: 20px;
      }
 
      .instruction {
          display: block;
          position: absolute;
-         width: var(--width2);
-         top: 80px;
-         left: var(--col3); 
+         width: 200px;
+         top: 190px;
+         left: 130px;
+     }
+
+     .instruction .title {
+         font-size: var(--font-size2);
+         float: left;
+         width: 50px;
+     }
+
+    .instruction .values {
+        display: block;
+        position: absolute;
+        top: 5px;
+        left: 80px;
+        width: 110px;
+    }
+
+     .counter {
+         display: block;
+         position: absolute;
+         width: 140px;
+         left: 130px;
+         top: 150px;
+     }
+     .counter .value {
+         position: absolute;
+         top: 5px;
+         left: 80px;
+     }
+
+     .counter .title {
+         font-size: var(--font-size2);
      }
  
-.pixel-screen, .char-screen, .console, .input {
-    position: absolute;
-    left: var(--col2);
+.processor .controls {
     display: block;
-    background-color: white;
+    position: absolute;
+    top: 30px;
+    left: 130px;
+}
+.processor .controls button {
+    float: left;
+    border: 0px;
+    padding: 0px;
+    width: 50px;
+    height: 50px;
+    margin: 2px;
+}
+button img {
+    border: 1px;
+    border-style: solid;
+    border-color: var(--color1);
+    width: 50px;
+    height: 50px;
+}
+button img:hover { 
+    border-color: white;
+}
+
+.io {
+    display: block;
+    position: absolute;
+    left: 0px;
+    top: 300px;
+}
+.pixels, .chars, .console, .input {
+    position: absolute;
+    display: block;
     width: var(--width3);
     color: black;
     font-family: var(--font2);
 }
-
-.pixel-screen, .char-screen {
-top: 300px;
-height: 200px;
+.pixels, .chars {
+top: 120px;
+height: 240px;
 }
 
+.pixels {
+    background-color: white;
+}
+
+.pixels div {
+    float: left;
+    height: var(--pixelSize);
+    width: var(--pixelSize);
+}
+
+.chars {
+    background: none;
+}
+.chars div {
+    height: var(--charSize);
+    width: var(--charSize);
+    float: left;
+}
+
+.chars div:empty {
+    background:none;
+    z-index: 2;
+}
 .console {
-  top: 520px;
   height: 60px;
   width: 315px;
 }
 
-.input {
-    top: 600px;
+input {
+    position: absolute;
+    background-color: white;
+    top: 80px;
     height: 20px;
   }
 
@@ -218,6 +325,10 @@ height: 200px;
     position: absolute;
     top: 0px;
     left: 700px;
+}
+.format {
+    background-color: white;
+    font-family: var(--font2);
 }
 .address, .page .number {
     display: block;
@@ -259,14 +370,30 @@ float: left;
     background: white;
 }
 
-.credits {
-    display: block;
+button#clear {
+    float: right;
+    margin-right: 0;
+    margin-top: 10px;
+}
+.links {
     position: absolute;
-    top: 600px;
+    top: 640px;
     font-family: var(--font1);
-    font-size: 10pt;
-    color: white;
+    font-size: var(--font-size2);
+}
+.links a {
+    margin-right: 20px;
 }
 a:visited {
     color: white;
 }
+
+.credits {
+    position: absolute;
+    top: 610px;
+    display: block;
+    font-family: var(--font1);
+    font-size: 12pt;
+    color: white;
+}
+
