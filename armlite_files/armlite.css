@@ -100,11 +100,11 @@ body.profile2 {
 
 
 .source {
-    padding-left: 5px;
+    padding-left: 0px;	/* changed by PLH because messes up input */
     font-family: var(--font2);
     background-color:white;
     display: block;
-    height: 580px;
+    height: 575px; /* changed by PLH to fit pForm */
 }
 
 .source .comment {
@@ -229,7 +229,7 @@ body.profile2 {
          position: absolute;
          width: 140px;
          left: 130px;
-         top: 150px;
+         top: 140px;
      }
      .counter .value {
          position: absolute;
@@ -279,19 +279,30 @@ button img:hover {
     color: black;
     font-family: var(--font2);
 }
-.pixels, .chars {
+.pixels {
 top: 120px;
 height: 240px;
+}
+.chars {		/* PLH - leave Richard to work out why this is needed to line the two up! */
+top: 117px;
+height: 240px;
+padding-left: 1px
 }
 
 .pixels {
     background-color: white;
 }
 
-.pixels div {
+.pixels1 div {
     float: left;
     height: var(--pixelSize);
     width: var(--pixelSize);
+}
+/* changed by PLH for two pixel size options */ 
+.pixels2 div {
+    float: left;
+    height: var(--charSize);
+    width: var(--charSize);
 }
 
 .chars {
@@ -307,12 +318,13 @@ height: 240px;
     background:none;
     z-index: 2;
 }
-.console {
-  height: 60px;
+.console {	/* PLH make a pixel larger so 4 lines do not need a scroll */
+  height: 61px;
   width: 315px;
 }
 
-input {
+/* PLH Changed from input tag to input id because was messing up other inputs */
+#input {
     position: absolute;
     background-color: white;
     top: 80px;
