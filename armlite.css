@@ -6,7 +6,7 @@
      --font1: Segoe UI,Open Sans,Verdana,Arial,Helvetica,sans-serif;
      --font-size1:16pt;
      --font2: monospace;
-     --font-size2: 12pt;
+     --font-size2: 10pt;
      --width1: 40px;
      --width2: 80px;
      --width3: 320px;
@@ -20,6 +20,7 @@ body{
 
     background-color: var(--color1);
     --displayProgram: block;
+    font-size: var(--font-size2);
 }
 
 body.profile1 {
@@ -64,7 +65,7 @@ body.profile2 {
     display: block;
     margin-top: 10px;;
 }
-.program button, button#clear  {
+.program button, button#clear, button#load  {
     border: 2px;
     border-style: solid;
     border-color: var(--color1);
@@ -81,7 +82,7 @@ body.profile2 {
     margin-right: 0px;
     padding-right: 3px;
 }
- button:hover, button#clear:hover {
+ button:hover, button#clear:hover, button#load:hover {
     border-color: white;
 }
 .edit #edit {
@@ -97,14 +98,13 @@ body.profile2 {
     display: none;
 }
 
-
-
 .source {
-    padding-left: 0px;	/* changed by PLH because messes up input */
+    padding: 0px;
     font-family: var(--font2);
+    font-size: 10pt;
     background-color:white;
     display: block;
-    height: 575px; /* changed by PLH to fit pForm */
+    height: 580px;
 }
 
 .source .comment {
@@ -119,9 +119,8 @@ body.profile2 {
 
 .source .line {
     color: darkgrey;
-    font-weight: bold;
     float: left;
-    width: 30px;
+    width: 29px;
 }
 
 .source .current {
@@ -130,6 +129,16 @@ body.profile2 {
 
 .source .break {
     background-color: red;
+}
+
+.source textarea {
+    font-family: var(--font2);
+    font-size: 10pt;
+    padding:0; 
+    border:0; 
+    white-space:pre;
+    height: 580px;
+    width: 300px;
 }
 .processor {
     display: block;
@@ -235,6 +244,7 @@ body.profile2 {
          position: absolute;
          top: 5px;
          left: 80px;
+         width: 110px;
      }
 
      .counter .title {
@@ -283,10 +293,10 @@ button img:hover {
 top: 120px;
 height: 240px;
 }
-.chars {		/* PLH - leave Richard to work out why this is needed to line the two up! */
-top: 117px;
+.chars {}
+top: 120px;
 height: 240px;
-padding-left: 1px
+padding-left: 1px;
 }
 
 .pixels {
@@ -298,32 +308,32 @@ padding-left: 1px
     height: var(--pixelSize);
     width: var(--pixelSize);
 }
-/* changed by PLH for two pixel size options */ 
+
 .pixels2 div {
     float: left;
-    height: var(--charSize);
-    width: var(--charSize);
+    height: calc(var(--pixelSize)*2);
+    width: calc(var(--pixelSize)*2);
 }
 
 .chars {
     background: none;
 }
 .chars div {
-    height: var(--charSize);
-    width: var(--charSize);
+    height: calc(var(--pixelSize)*3);
+    width: calc(var(--pixelSize)*2);
     float: left;
+    font-size: 14px;
 }
 
 .chars div:empty {
     background:none;
     z-index: 2;
 }
-.console {	/* PLH make a pixel larger so 4 lines do not need a scroll */
+.console {
   height: 61px;
   width: 315px;
 }
 
-/* PLH Changed from input tag to input id because was messing up other inputs */
 #input {
     position: absolute;
     background-color: white;
@@ -333,7 +343,7 @@ padding-left: 1px
 
 .memory {
     display: block;
-    width: calc(var(--width2)*4+var(--width1));
+    width: 400px;
     position: absolute;
     top: 0px;
     left: 700px;
