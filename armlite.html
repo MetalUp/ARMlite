@@ -15,7 +15,7 @@
     <div class="source" id="source">
 	</div>
     <div class="controls">
-      <div id="load"><input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off" style="display:none;" ><button id="load" onclick="document.getElementById(&#39;read-input&#39;).click()">Load</button></div>
+      <div id="load"><input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off"><button id="load" onclick="document.getElementById(&#39;read-input&#39;).click()">Load</button></div>
       <button  id="save" onclick="saveProgram()">Save</button>
       <button  id="edit" onclick="openProgram()">Edit</button>
       <button  id="submit" onclick="programSubmit()">Submit</button>
@@ -27,7 +27,7 @@
   <div id="registers" class="registers">
       <div class="register"><div class="name">PC</div><div class="value hex" id="R15">0</div></div>
       <div class="register"><div class="name">LR</div><div class="value hex" id="R14">0</div></div>
-      <div class="register"><div class="name">SP</div><div class="value hex" id="R13">800</div></div>
+      <div class="register"><div class="name">SP</div><div class="value hex" id="R13">0</div></div>
       <div class="register"><div class="name">R12</div><div class="value hex" id="R12">0</div></div>
       <div class="register"><div class="name">R11</div><div class="value hex" id="R11">0</div></div>
       <div class="register"><div class="name">R10</div><div class="value hex" id="R10">0</div></div>
@@ -50,12 +50,12 @@
  <div class="instruction">
   <div class="title">Decode</div>
   <div class="values">
-  <div class="value" id="ir">e51f0100</div>
-  <div class="value" id="ur">LDR</div>
+  <div class="value" id="ir"></div>
+  <div class="value" id="ur"></div>
   </div>
  </div>
  <div class="counter">
-  <div class="value" id="counter">123456789012345</div>
+  <div class="value" id="counter"></div>
   <div class="title">Count</div>
  </div>
  <div class="controls">
@@ -68,11 +68,7 @@
     <button type="submit" id="irq" title="Interrupt" onclick="iclick()"><img src="images/Interrupt.png"></button>	
  </div>
  <div class="io"><div id="outer_console"><!-- PLH - added div -->
-	<textarea class="console" id="console">Hello World!
-		Hello World!
-		Hello World!
-	Stack Overflow Exception
-	Halted on Line 15</textarea></div>
+	<textarea class="console" id="console"></textarea></div>
 	<!-- PLH - had to revert next line to previous version -->
 	<div class="input" id="input"></div>
 	<div class="pixels" id="pixels"></div>
@@ -84,7 +80,7 @@
     <div class="Paging"></div>
     <div class="table">
       <div class="header">
-        <div class="page"><div class="number" id="page" onclick="changePage()">00</div></div>
+        <div id="page" onclick="changePage()">00</div>
         <div class="address">0x0</div>
         <div class="address">0x4</div>
         <div class="address">0x8</div>

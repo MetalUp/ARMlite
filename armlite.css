@@ -79,6 +79,9 @@ body.profile2 {
     margin-right: 10px;
     padding: 0px 5px 0px 5px;
 }
+#load input {
+    display: none;
+}
 .program button:last-child {
     margin-right: 0px;
     padding-right: 3px;
@@ -297,17 +300,15 @@ button img:hover {
     color: black;
     font-family: var(--font2);
 }
-.pixels {
+.pixels, .chars {
 top: 120px;
 height: 240px;
 }
-.chars {}
-top: 120px;
-height: 240px;
-padding-left: 1px;
+.chars {
+    padding-left: 1px;
 }
 
-.pixels {
+.pixels div{
     background-color: white;
 }
 
@@ -360,11 +361,32 @@ padding-left: 1px;
     background-color: white;
     font-family: var(--font2);
 }
-.address, .page .number {
+.address {
     display: block;
 color: white;
 font-family: monospace;
 float: left;
+}
+
+#page {
+    display: block;
+color: white;
+font-family: monospace;
+float: left;
+    color: black;
+    background: white;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 12px;
+    margin-right:8px;
+}
+#page input {
+    font-family: var(--font2);
+    font-size: 10pt;
+    width:15px; 
+    height:12px;
+    padding: 0px;
+    border: none;
 }
 
 .row .address {
@@ -383,14 +405,7 @@ float: left;
     display: block;
 
 }
-.page .number {
-    color: black;
-    background: white;
-    padding-left: 2px;
-    padding-right: 2px;
-    margin-left: 12px;
-    margin-right:8px;
-}
+
 .table, .row, .header  {
     display: block;
 }
