@@ -38,7 +38,7 @@ body.profile2 {
     color: white;
     padding-bottom: 10px;
 }
-.program > .title, .processor > .title, .memory > .title {
+#program > .title, #processor > .title, .memory > .title {
     text-align: center;
 }
 
@@ -53,7 +53,7 @@ body.profile2 {
     background-color: orange;
 }
 
-.program {
+#program {
     display: var(--displayProgram);
     width: 300px;
     position: absolute;
@@ -61,12 +61,12 @@ body.profile2 {
     top: 0px;
 }
 
-.program .controls {
+#program-controls {
     display: block;
     padding-top: 5px;
 }
 
-.program button, button#clear, button#load  {
+#program button, button#clear {
     border: 2px;
     border-style: solid;
     border-color: var(--color1);
@@ -79,10 +79,10 @@ body.profile2 {
     margin-right: 10px;
     padding: 0px 5px 0px 5px;
 }
-#load input {
+#read-input {
     display: none;
 }
-.program button:last-child {
+#program-controls button:last-child {
     margin-right: 0px;
     padding-right: 3px;
 }
@@ -98,14 +98,14 @@ body.profile2 {
 .edit #submit, .edit #revert {
     display: block;
 }
-.program.edit #edit {
+.edit #edit {
     display: none;
 }
-.program.edit .source {
+.edit .source {
     padding: 0px;
     height: 580px;
 }
-.program .source {
+.source {
     padding: 2px;
     font-family: var(--font2);
     font-size: 10pt;
@@ -151,7 +151,7 @@ body.profile2 {
 .source form {
     height: 576px;
 }
-.processor {
+#processor {
     display: block;
     width: 300px;
     position: absolute;
@@ -160,14 +160,14 @@ body.profile2 {
     height: 100%;
 }
 
-.processor .title {
+#processor .title {
     display: block;
 }
-    .registers {
+    #registers {
         display: block;
         position: absolute;
     }
-    .registers .title {
+    #registers .title {
         font-size: var(--font-size2);
     }
     .register {
@@ -262,13 +262,13 @@ body.profile2 {
          font-size: var(--font-size2);
      }
  
-.processor .controls {
+#run-controls {
     display: block;
     position: absolute;
     top: 30px;
     left: 130px;
 }
-.processor .controls button {
+#run-controls button {
     float: left;
     border: 0px;
     padding: 0px;
@@ -287,57 +287,56 @@ button img:hover {
     border-color: white;
 }
 
-.io {
+#io {
     display: block;
+
     position: absolute;
-    left: 0px;
     top: 300px;
+    left: var(--col2);
+    width: 300px;
 }
-.pixels, .chars, .console, .input {
+#pixels, #chars, #outer_console, #input, #input input {
     position: absolute;
     display: block;
     width: var(--width3);
     color: black;
     font-family: var(--font2);
 }
-.pixels, .chars {
+#pixels, #chars {
 top: 120px;
 height: 240px;
 }
-.chars {
-    padding-left: 1px;
-}
 
-.pixels div{
+#pixels div{
     background-color: white;
+    float:left;
 }
 
 .pixels1 div {
-    float: left;
     height: var(--pixelSize);
     width: var(--pixelSize);
 }
 
 .pixels2 div {
-    float: left;
     height: calc(var(--pixelSize)*2);
     width: calc(var(--pixelSize)*2);
 }
 
-.chars {
+#chars {
     background: none;
+    padding-left: 1px;
 }
-.chars div {
+#chars div {
     height: calc(var(--pixelSize)*3);
     width: calc(var(--pixelSize)*2);
     float: left;
     font-size: 14px;
 }
-
-.chars div:empty {
+#chars div:empty {
     background:none;
     z-index: 2;
 }
+
 .console {
   height: 61px;
   width: 315px;

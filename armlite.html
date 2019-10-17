@@ -10,21 +10,22 @@
  <script src='main.js'></script>
 </head>
 <body id="xxbody" onresize="getDimensions()" onload="startIt()" onkeydown="keyDown(event)" onkeyup="keyUp(event)">
-  <div class="program edit" id="program">
+  <div class="edit" id="program">
     <div class="title">Program</div>
     <div class="source" id="source">
 	</div>
-    <div class="controls">
-      <div id="load"><input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off"><button id="load" onclick="document.getElementById(&#39;read-input&#39;).click()">Load</button></div>
+    <div id="program-controls">
+      <input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off">
+      <button id="load" onclick="document.getElementById(&#39;read-input&#39;).click()">Load</button>
       <button  id="save" onclick="saveProgram()">Save</button>
       <button  id="edit" onclick="openProgram()">Edit</button>
       <button  id="submit" onclick="programSubmit()">Submit</button>
       <button  id="revert" onclick="programCancel()">Revert</button>
     </div>
   </div>
-  <div class="processor">
+  <div id="processor">
     <div class="title">Processor</div>
-  <div id="registers" class="registers">
+  <div id="registers">
       <div class="register"><div class="name">PC</div><div class="value hex" id="R15">0</div></div>
       <div class="register"><div class="name">LR</div><div class="value hex" id="R14">0</div></div>
       <div class="register"><div class="name">SP</div><div class="value hex" id="R13">0</div></div>
@@ -58,7 +59,7 @@
   <div class="value" id="counter"></div>
   <div class="title">Count</div>
  </div>
- <div class="controls">
+ <div id="run-controls">
     <button type="submit" id="run" title="Run" onclick="run()"><img src="images/Run.png"></button>
     <button type="submit" id="pause" title="Pause" onclick="stop()"><img src="images/Pause.png"></button>
 	<!-- stop is what reset was before (and pause what stop was) -->
@@ -67,14 +68,16 @@
     <button type="submit" id="slow" title="Slow" onclick="runSlow()"><img src="images/Slow.png"></button>
     <button type="submit" id="irq" title="Interrupt" onclick="iclick()"><img src="images/Interrupt.png"></button>	
  </div>
- <div class="io"><div id="outer_console"><!-- PLH - added div -->
-	<textarea class="console" id="console"></textarea></div>
-	<!-- PLH - had to revert next line to previous version -->
-	<div class="input" id="input"></div>
-	<div class="pixels" id="pixels"></div>
-	<div class="chars"id="chars"></div>
- </div>
 </div>
+ <div id="io">
+   <div id="outer_console"><!-- PLH - added div -->
+  <textarea class="console" id="console"></textarea>
+  </div>
+	<!-- PLH - had to revert next line to previous version -->
+	<div id="input"></div>
+	<div id="pixels"></div>
+	<div id="chars"></div>
+  </div>
 <div class="memory hex">
     <div class="title">Memory</div>
     <div class="Paging"></div>
