@@ -92,10 +92,10 @@ body.profile2 {
 .edit #edit {
     display: none;
 }
-#submit, #revert {
+#program #submit, #program #revert {
     display: none;
 }
-.edit #submit, .edit #revert {
+#program.edit #submit, #program.edit #revert {
     display: block;
 }
 .edit #edit {
@@ -134,8 +134,13 @@ body.profile2 {
     background-color: orange;
 }
 
-#source .break {
+#source .breakpoint .line {
     background-color: red;
+    color: black;
+}
+
+#source .error {
+    background-color: pink;
 }
 
 #source textarea {
