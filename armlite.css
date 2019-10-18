@@ -36,10 +36,10 @@ body.profile2 {
     font-family: var(--font1);
     font-size: var(--font-size1);
     color: white;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
-#program > .title, #processor > .title, .memory > .title {
-    text-align: center;
+#program > .title, #processor > .title, #io > .title, .memory > .title {
+    text-align: center; 
 }
 
 .value {
@@ -101,11 +101,11 @@ body.profile2 {
 .edit #edit {
     display: none;
 }
-.edit .source {
+.edit #source {
     padding: 0px;
     height: 580px;
 }
-.source {
+#source {
     padding: 2px;
     font-family: var(--font2);
     font-size: 10pt;
@@ -114,31 +114,32 @@ body.profile2 {
     height: 576px;
 }
 
-.source .comment {
+#source .comment {
     color: green;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;  
 }
-.source .label {
+#source .label {
     font-weight: bold;
 }
 
-.source .line {
+#source .line {
     color: darkgrey;
     float: left;
     width: 29px;
 }
 
-.source .current {
+#source .current {
     background-color: orange;
 }
 
-.source .break {
+#source .break {
     background-color: red;
 }
 
-.source textarea {
+#source textarea {
+    resize: none;
     font-family: var(--font2);
     font-size: 10pt;
     padding:2px; 
@@ -148,7 +149,7 @@ body.profile2 {
     width: 296px;
 }
 
-.source form {
+#source form {
     height: 576px;
 }
 #processor {
@@ -289,21 +290,20 @@ button img:hover {
 
 #io {
     display: block;
-
     position: absolute;
-    top: 300px;
+    top: 280px;
     left: var(--col2);
     width: 300px;
 }
 #pixels, #chars, #outer_console, #input, #input input {
-    position: absolute;
     display: block;
     width: var(--width3);
     color: black;
     font-family: var(--font2);
 }
 #pixels, #chars {
-top: 120px;
+    position: absolute;
+top: 136px;
 height: 240px;
 }
 
@@ -337,15 +337,15 @@ height: 240px;
     z-index: 2;
 }
 
-.console {
+#console {
+  resize: none;
   height: 61px;
   width: 315px;
 }
 
 #input {
-    position: absolute;
     background-color: white;
-    top: 80px;
+    margin-top:5px;
     height: 20px;
   }
 

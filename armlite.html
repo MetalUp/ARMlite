@@ -12,7 +12,7 @@
 <body id="xxbody" onresize="getDimensions()" onload="startIt()" onkeydown="keyDown(event)" onkeyup="keyUp(event)">
   <div class="edit" id="program">
     <div class="title">Program</div>
-    <div class="source" id="source">
+    <div id="source">
 	</div>
     <div id="program-controls">
       <input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off">
@@ -56,7 +56,7 @@
   </div>
  </div>
  <div class="counter">
-  <div class="value" id="counter"></div>
+  <div class="value" id="counter">0</div>
   <div class="title">Count</div>
  </div>
  <div id="run-controls">
@@ -70,8 +70,9 @@
  </div>
 </div>
  <div id="io">
+    <div class="title">Input/Output</div>
    <div id="outer_console"><!-- PLH - added div -->
-  <textarea class="console" id="console"></textarea>
+  <textarea id="console"></textarea>
   </div>
 	<!-- PLH - had to revert next line to previous version -->
 	<div id="input"></div>
@@ -97,7 +98,7 @@
         <a id="help" href="">Help</a></p>
     </div>
     <div class="credits">    
-      ARMLite Simulator &copy; Peter Higginson 2019
+      ARMLite Simulator v0.1 &copy; Peter Higginson 2019
     </div>
 </div>
 <!-- LATER PIWIK HERE -->
