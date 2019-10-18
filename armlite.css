@@ -7,7 +7,7 @@
      --font-size1:16pt;
      --font2: monospace;
      --font-size2: 10pt;
-     --width1: 40px;
+     --width1: 48px;
      --width2: 80px;
      --width3: 320px;
      --width4: 600px;
@@ -306,6 +306,11 @@ button img:hover {
     color: black;
     font-family: var(--font2);
 }
+#input input {
+    border-style: solid;
+    border-color: red;
+    border-width: 2px;
+}
 #pixels, #chars {
     position: absolute;
 top: 136px;
@@ -356,7 +361,7 @@ height: 240px;
 
 .memory {
     display: block;
-    width: 400px;
+    width: 410px;
     position: absolute;
     top: 0px;
     left: 700px;
@@ -382,12 +387,13 @@ float: left;
     padding-left: 2px;
     padding-right: 2px;
     margin-left: 12px;
-    margin-right:8px;
+    margin-right: 10px;
+    width: 22px;
 }
 #page input {
     font-family: var(--font2);
     font-size: 10pt;
-    width:15px; 
+    width:22px; 
     height:12px;
     padding: 0px;
     border: none;
