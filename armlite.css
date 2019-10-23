@@ -14,6 +14,9 @@
      --color1:  rgb(68, 114, 196);
      --pixelSize: 5px;
      --charSize: 10px;
+     --ur: block;
+     --flags: block;
+     --irq: block;
 }
 
 body{
@@ -23,13 +26,16 @@ body{
     font-size: var(--font-size2);
 }
 
-body.profile1 {
+body.profile-1 {
     --displayProgram: none;
-    --displayProgram: none;
+    --col2: 20px;
+    --col3: 150px;
+    --col4: 350px;
+    --ur: none;
+    --flags: none;
+    --irq: none;
 }
-body.profile2 {
-    --displayProgram: block;
-}
+
 
 .title {
     display: block;
@@ -40,6 +46,10 @@ body.profile2 {
 }
 #program > .title, #processor > .title, #io > .title, .memory > .title {
     text-align: center; 
+}
+
+#program {
+    display: var(--displayProgram);
 }
 
 .value {
@@ -196,7 +206,7 @@ body.profile2 {
     }
 
     .flags {
-        display: block;
+        display: var(--flags);
         position: absolute;
         top: 240px;
         left: 130px;
@@ -250,6 +260,10 @@ body.profile2 {
         width: 110px;
     }
 
+    .instruction #ur {
+        display: var(--ur);
+    }
+
      .counter {
          display: block;
          position: absolute;
@@ -281,6 +295,9 @@ body.profile2 {
     width: 50px;
     height: 50px;
     margin: 2px;
+}
+button#irq {
+    display: var(--irq);
 }
 button img {
     border: 1px;
@@ -364,7 +381,7 @@ height: 240px;
     width: 410px;
     position: absolute;
     top: 0px;
-    left: 700px;
+    left: var(--col4);
 }
 .format {
     background-color: white;
