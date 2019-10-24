@@ -140,7 +140,7 @@ body.profile-1 {
     width: 29px;
 }
 
-#source .current {
+#source .current, .word.current {
     background-color: orange;
 }
 
@@ -313,9 +313,9 @@ button img:hover {
 #io {
     display: block;
     position: absolute;
-    top: 280px;
+    top: 290px;
     left: var(--col2);
-    width: 300px;
+    width: 320px;
 }
 #pixels, #chars, #outer_console, #input, #input input {
     display: block;
