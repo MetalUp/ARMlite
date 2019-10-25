@@ -15,12 +15,6 @@
     <div id="source">
 	</div>
     <div id="program-controls">
-      <input type="file" id="read-input" onchange="read_chg(this)" autocomplete="off">
-      <button id="load" onclick="document.getElementById(&#39;read-input&#39;).click()">Load</button>
-      <button  id="save" onclick="saveProgram()">Save</button>
-      <button  id="edit" onclick="openProgram()">Edit</button>
-      <button  id="submit" onclick="programSubmit()">Submit</button>
-      <button  id="revert" onclick="programCancel()">Revert</button>
     </div>
   </div>
   <div id="processor">
@@ -71,9 +65,8 @@
 </div>
  <div id="io">
     <div class="title">Input/Output</div>
-   <div id="outer_console"><!-- PLH - added div -->
-  <textarea id="console" readonly></textarea>
-  </div>
+   <div id="outer_console">
+   </div>
 	<!-- PLH - had to revert next line to previous version -->
 	<div id="input"></div>
 	<div id="pixels"></div>
@@ -94,11 +87,11 @@
     </div>
     <button id="clear" title="Clear Memory" onclick="clearMem()">Clear</button>
     <div class="links">
-        <a id="help" href="">About</a>
+        <a id="about" href="">About</a>
         <a id="help" href="">Help</a></p>
     </div>
     <div class="credits">    
-      ARMLite Simulator v0.1.0 &copy; Peter Higginson 2019
+      ARMLite Simulator v0.0.7 &copy; Peter Higginson 2019
     </div>
 </div>
 <!-- LATER PIWIK HERE -->
