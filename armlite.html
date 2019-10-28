@@ -5,12 +5,13 @@
  <title>ARMlite Assembly Language Simulator</title>
  <meta name="copyright" content="&copy; 2019 Peter Higginson and Richard Pawson">
  <link href="armlite.css" rel="stylesheet">
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
  <script src='routines_min.js'></script>
  <script src='css_subs.js'></script>
  <script src='main.js'></script>
 </head>
 <body id="xxbody" onresize="getDimensions()" onload="startIt()" onkeydown="keyDown(event)" onkeyup="keyUp(event)">
-  <div class="edit" id="program">
+  <div id="program">
     <div class="title">Program</div>
     <div id="source">
 	</div>
@@ -60,8 +61,10 @@
     <button type="submit" id="stop" title="Stop" onclick="reset1()"><img src="images/Stop.png"></button>	
     <button type="submit" id="step" title="Step" onclick="step3()"><img src="images/Step.png"></button>
     <button type="submit" id="slow" title="Slow" onclick="runSlow()"><img src="images/Slow.png"></button>
-    <button type="submit" id="irq" title="Interrupt" onclick="iclick()"><img src="images/Interrupt.png"></button>	
- </div>
+    <i id="spinning" class="fa fa-gear fa-spin" title="Running"></i>
+    <i id="static" class="fa fa-gear" title="Paused"></i>
+  </div>
+ <button type="submit" id="irq" title="Interrupt" onclick="iclick()" title="Interrupt"><img src="images/Interrupt.png"></button>	
 </div>
  <div id="io">
     <div class="title">Input/Output</div>
@@ -88,12 +91,28 @@
     <button id="clear" title="Clear Memory" onclick="clearMem()">Clear</button>
     <div class="links">
         <a id="about" href="">About</a>
-        <a id="help" href="">Help</a></p>
+        <a id="book" href="">Book</a>
+        <a id="examples" href="">Examples</a>
+        <a id="spec" href="">Technical Specification</a></p>
     </div>
-    <div class="credits">    
-      ARMLite Simulator v0.0.7 &copy; Peter Higginson 2019
+    <div class="credits" id="credits">    
+      ARMLite Simulator v0.0.8 &copy; Peter Higginson 2019
     </div>
 </div>
-<!-- LATER PIWIK HERE -->
+<script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDomains", ["*.peterhigginson.co.uk/ARMlite","*.peterhigginson.co.uk/ARMlite"]]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//www.peterhigginson.co.uk/piwik/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '5']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="//www.peterhigginson.co.uk/piwik/piwik.php?idsite=5" style="border:0;" alt="" /></p></noscript>
 </body>
 </html>
