@@ -74,7 +74,7 @@ body.profile-1 {
     padding-top: 5px;
 }
 
-.running #program-controls {
+.running:not(.paused) #program-controls {
     display: none;
 }
 
@@ -325,6 +325,10 @@ body.profile-1 {
 }
 .running #pause, .running #stop, .running #slow, .running #step {
     opacity: 1;
+}
+
+.running.slow #slow {
+    opacity: 0.5;
 }
 .running #pause img:hover, .running #stop img:hover, .running #slow img:hover, .running #step img:hover {
     border: 1px solid white;
