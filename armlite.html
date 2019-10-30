@@ -6,11 +6,11 @@
  <meta name="copyright" content="&copy; 2019 Peter Higginson and Richard Pawson">
  <link href="armlite.css" rel="stylesheet">
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
- <script src='routines_min.js'></script>
  <script src='css_subs.js'></script>
  <script src='main.js'></script>
+ <script src='routines_min.js'></script>
 </head>
-<body id="xxbody" onresize="getDimensions()" onload="startIt()" onkeydown="keyDown(event)" onkeyup="keyUp(event)">
+<body id="xxbody" onresize="getDimensions()" onkeydown="keyDown(event)" onkeyup="keyUp(event)">
   <div id="program">
     <div class="title">Program</div>
     <div id="source">
@@ -96,17 +96,18 @@
         <a id="spec" href="">Technical Specification</a></p>
     </div>
     <div class="credits" id="credits">    
-      ARMLite Simulator v0.0.8 &copy; Peter Higginson 2019
+      ARMLite Simulator v0.0.10 &copy; Peter Higginson 2019
     </div>
 </div>
 <script type="text/javascript">
+  startIt();
   var _paq = _paq || [];
   _paq.push(["setDomains", ["*.peterhigginson.co.uk/ARMlite","*.peterhigginson.co.uk/ARMlite"]]);
   _paq.push(["disableCookies"]);
   _paq.push(['trackPageView']);
   _paq.push(['enableLinkTracking']);
   (function() {
-    var u="//www.peterhigginson.co.uk/piwik/";
+    var u="https://www.peterhigginson.co.uk/piwik/";
     _paq.push(['setTrackerUrl', u+'piwik.php']);
     _paq.push(['setSiteId', '5']);
     var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
