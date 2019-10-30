@@ -2,20 +2,23 @@
      --col1: 20px;
      --col2: 350px;
      --col3: 480px;
-     --col4: 700px;
+     --posMem: 700px;
      --font1: Segoe UI,Open Sans,Verdana,Arial,Helvetica,sans-serif;
      --font-size1:16pt;
      --font2: monospace;
      --font-size2: 10pt;
      --width1: 48px;
-     --width2: 80px;
+     --widthWord: 80px;
      --width3: 320px;
      --width4: 600px;
+     --widthMem: 410px;
+     --widthRegister: 120px;
      --color1:  rgb(68, 114, 196);
      --pixelSize: 5px;
      --charSize: 10px;
      --ur: block;
      --flags: block;
+     --posOther: 130px;
 }
 
 body{
@@ -25,11 +28,19 @@ body{
     font-size: var(--font-size2);
 }
 
+body.binary {
+    --widthWord: 250px;
+    --widthMem: 1090px;
+    --widthRegister: 290px;
+    --posMem: 870px;
+    --posOther: 300px;
+}
+
 body.profile-1 {
     --displayProgram: none;
     --col2: 20px;
     --col3: 150px;
-    --col4: 350px;
+    --posMem: 350px;
     --ur: none;
     --flags: none;
 }
@@ -190,7 +201,7 @@ body.profile-1 {
     }
     .register {
         display: block;
-        width: 120px;
+        width: var(--widthRegister);
     }
     .register .name {
         font-family: var(--font2);
@@ -202,16 +213,20 @@ body.profile-1 {
     .register .value {
         display: block;
         padding-right: 5px;
-        width: var(--width2);
+        width: var(--widthWord);
         float: left;
         text-align: right;
     }
 
+    .other {
+        display: block;
+        position: absolute;
+        left: var(--posOther);
+    }
     .flags {
         display: var(--flags);
         position: absolute;
-        top: 240px;
-        left: 130px;
+        top: 205px;
     }
     .flags .title {
         font-size: var(--font-size2);
@@ -244,8 +259,7 @@ body.profile-1 {
          display: block;
          position: absolute;
          width: 200px;
-         top: 190px;
-         left: 130px;
+         top: 160px;
      }
 
      .instruction .title {
@@ -270,8 +284,7 @@ body.profile-1 {
          display: block;
          position: absolute;
          width: 140px;
-         left: 130px;
-         top: 140px;
+         top: 120px;
      }
      .counter .value {
          position: absolute;
@@ -288,8 +301,7 @@ body.profile-1 {
 #run-controls {
     display: block;
     position: absolute;
-    top: 30px;
-    left: 130px;
+    width: 190px;
 }
 #run-controls button, #irq button {
     float: left;
@@ -437,10 +449,10 @@ height: 240px;
 
 .memory {
     display: block;
-    width: 410px;
+    width: var(--widthMem);
     position: absolute;
     top: 0px;
-    left: var(--col4);
+    left: var(--posMem);
 }
 .format {
     background-color: white;
@@ -481,7 +493,7 @@ float: left;
 
 .header .address, .word {
     font-family: monospace;
-    width: var(--width2);
+    width: var(--widthWord);
     padding-left: 5px;
     padding-right: 5px;
     text-align: right;
