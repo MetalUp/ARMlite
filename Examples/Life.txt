@@ -1,32 +1,34 @@
-      MOV R10, #12288   //Screen size (for screen1 & screen2)
-      MOV R11, #.green  //Constant
-      MOV R12, #.white  //Constant
+      MOV R11, #.black //Constant
+      MOV R12, #.white //Constant
       MOV R1, #screen2 
-      ADD R3, R1, R10
+      ADD R3, R1, #12288 //End
 clearPixel:
-      STR R12, [R1]
+      STR R12, [R1]	// set everything white
       ADD R1, R1, #4
       CMP R1, R3
       BLT clearPixel
 // Initialise 2nd screen with random pattern
       MOV R2, #screen2 //1st pixel
-      ADD R3, R2, R10
-      SUB R3, R3, #512 //To ignore last 2 rows
-      ADD R2, R2, #256 //To ignore first row. 
+      ADD R2, R2, #1536 //To skip a few rows
+      ADD R3, R2, #8192 //End well short
 randLoop: LDR R0, .Random
       AND R0, R0, #1
       CMP R0, #0
-      BEQ .+3
-      STR R12, [R2]
-      B .+2
-      STR R11, [R2]
+      BNE skip		// only need to set blacks
+      and r4,r2,#255
+      cmp r4,#34
+      blt skip		// too near left edge
+      cmp r4,#218
+      bgt skip		// too near right edge
+      STR R11, [R2]	// set black
+skip:
       ADD R2, R2, #4
       CMP R2, R3
       BLT randLoop
 copyScreen2to1: 
       MOV R1, #.PixelScreen
       MOV R2, #screen2
-      ADD R3, R1, R10
+      ADD R3, R1, #12288
 copyLoop:
       LDR R0, [R2]
       STR R0, [R1]
@@ -34,14 +36,14 @@ copyLoop:
       ADD R2, R2, #4
       CMP R1, R3
       BLT copyLoop
-//Next generation
-      MOV R3, #256 //R3 is cell counter, ignores top & bottom rows
+//Next generation - ignore left and right columns
+      MOV R3, #260 //R3 is cell counter, 256 - 12031 to ignore top & bottom rows
 nextGenLoop:
       MOV R1, #.PixelScreen
       ADD R1, R1, R3
       MOV R2, #screen2
       ADD R2, R2, R3
-      LDR R4, [R1] //R4 is screen1 cell value
+      //LDR R4, [R1] //R4 is screen1 cell value - don't need this
 //Count live neighbours In R6) from Screen1, using R5 as temp cell value
       MOV R6, #0 //Reset live count
       SUB R1, R1, #256 //North 
@@ -63,28 +65,31 @@ nextGenLoop:
 //Now decide fate of cell
       CMP R6, #4
       BLT .+3 
-      STR R12, [R2] //Cell dies (or remains empty) if 4 neighbours
+      STR R12, [R2] //Cell dies (or remains empty) if 4 or more neighbours
       B continue
       CMP R6, #3
       BLT .+3 
-      STR R11, [R2] //Cell lives (or remains empty) if 4 neighbours
+      STR R11, [R2] //Cell born (or remains) if 3 or 4 neighbours
       B continue
       CMP R6, #2
-      BLT .+3
-      STR R4, [R2] //Cell remains in present state if 2 neighbours
-      B continue
+      BEQ continue  //Cell remains in present state if 2 neighbours
       STR R12, [R2] //Cell dies (or remains empty) if < 2 neighbours
 continue:
       ADD R3,R3, #4
+      and r0,r3,#255
+      cmp r0,#252
+      blt nextGenLoop
+	// here if got to right most column
+	ADD R3,R3, #8	// skip this and left most	  
       CMP R3, #11776
       BLT nextGenLoop
       B copyScreen2to1
 //Subroutines
-countIfLive:  LDR R5, [R1]
+countIfLive: LDR R5, [R1] //Sub
       CMP R5, R12
       BEQ .+2
       ADD R6, R6, #1
       RET
-
+      HALT
       .ALIGN 1024
 screen2: .DATA
