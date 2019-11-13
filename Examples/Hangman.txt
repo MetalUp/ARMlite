@@ -1,70 +1,77 @@
-//Define and initialise registers
-MOV R5, #0  //R5 will hold the successful guesses in right place(s), otherwise zeros
-MOV R12, #0 //Number of wrong guesses
-MOV R11, #0 //Number of matches
-//Capture word
+//Register uses:
+//R0 multiple, temporary, purposes
+//R1 secret word, loaded from memory (loaded & cleared each guess so it does not show on the UI)
+//R2 current letter guess
+//R3 successful guesses in right place(s), otherwise zeros
+//R4 holds the built up result (of underscores and correct letters)
+//R5 to R7 temporary use in processing
+//R8 number of wrong guesses
+//R9 number of matches made
+
+captureWord:
 MOV R0, #setter
 STR R0, .WriteString
 MOV R0, #secretWord 
 STR R0, .ReadString
-LDR R1, secretWord
 
 guessLetter:
 MOV R0, #player
 STR R0, .WriteString
 MOV R0, #letterGuess
 STR R0, .ReadString
-LDR R0, letterGuess
-AND R0,R0, #255 //Limit to one character only
+LDR R2, letterGuess
+AND R2,R2, #255 //Limit to one character only
+MOV R6, #0  //Set to 1 if a NEW match is found
+MOV R7, #0  //This will increment 0 > 8 > 16> 24 as a shift amount to select successive characters
 
-MOV R8, #0  //Set to 1 if a new match
-MOV R2, #0  //The shift value for four characters 0 > 8 > 16> 24
-checkChar:
-MOV R6, #0xff  //The mask for character 1
-LSL R6, R6, R2 //Shift mask as needed
-AND R7,R5, R6  //Apply mask to past guesses
-CMP R7, #0 //If char position is not empty we previously guess this char
-BEQ cont
-LSR R4,R7, R2
+checkForMatch:
+MOV R5, #0xff  //The mask for character 1
+LSL R5, R5, R7 //Shift mask to character of interest (first shift will be zero!)
+AND R0,R3,R5  //Apply mask to past guesses
+CMP R0, #0 
+BEQ cont //If char position is NOT empty this char has been correctly guessed, so...
+LSR R4,R0,R7
 B writeChar
 cont: 
-AND R3, R1, R6
-LSR R4, R3, R2  //Get the char back to position 1
-CMP R4, R0  //TODO, check for upper/lower case by XOR #32 & try again
+LDR R1, secretWord
+AND R0, R1, R5
+MOV R1, #0 //Reset so it does not reveal word on UI when paused
+LSR R4, R0, R7  //Get the char back to position 1
+CMP R4, R2  //TODO, check for upper/lower case by XOR #32 & try again
 BNE notAMatch
-ORR R5,R5,R3 
-ADD R11,R11,#1
-MOV R8, #1  //Set R8 to flag that the character has been matched
+ORR R3,R3,R0 
+ADD R9,R9,#1
+MOV R6, #1  //Set R6 to flag that the character has been matched
 B writeChar
 notAMatch:
 MOV R4, #95 //Underscore
 writeChar:
 STR R4, .WriteChar
-ADD R2,R2, #8  //Shift to next character
-CMP R2, #32
-BLT checkChar
-MOV R4, #10 //Newline
-STR R4, .WriteChar
+ADD R7,R7, #8  //Shift to next character
+CMP R7, #32
+BLT checkForMatch
+MOV R0, #10 //Newline
+STR R0, .WriteChar
 
 //If there has not been a match, increment the number of misses
-CMP R8, #0
+CMP R6, #0
 BNE checkWin
-ADD R12, R12, #1
-STR R12, .WriteUnsignedNum
+ADD R8, R8, #1
+STR R8, .WriteUnsignedNum
 MOV R0, #wrong
 STR R0, .WriteString
 B drawPic
 
 //Check for win
 checkWin:
-CMP R11, #4
+CMP R9, #4
 BNE drawPic
 MOV R0, #win
 STR R0, .WriteString
 HALT
 
 drawPic:
-CMP R12, #1
+CMP R8, #1
 BLT guessLetter
 MOV R0, #.brown
 STR R0, .Pixel707 //Upright
@@ -76,46 +83,46 @@ STR R0, .Pixel547
 STR R0, .Pixel515
 STR R0, .Pixel483
 STR R0, .Pixel451
-CMP R12, #2
+CMP R8, #2
 BLT guessLetter
 STR R0, .Pixel452 //Cross beam
 STR R0, .Pixel452
 STR R0, .Pixel453
 STR R0, .Pixel454
 STR R0, .Pixel455
-CMP R12, #3
+CMP R8, #3
 BLT guessLetter  
 MOV R0, #.grey
 STR R0, .Pixel487 //Rope
-CMP R12, #4
+CMP R8, #4
 BLT guessLetter
 MOV R0, #.pink
 STR R0, .Pixel519 //Head
-CMP R12, #5
+CMP R8, #5
 BLT guessLetter
 MOV R0, #.blue
 STR R0, .Pixel551 //Body
 STR R0, .Pixel583
 STR R0, .Pixel615
-CMP R12, #6
+CMP R8, #6
 BLT guessLetter
 STR R0, .Pixel646 //Left leg
 STR R0, .Pixel678
 STR R0, .Pixel710
-CMP R12, #7
+CMP R8, #7
 BLT guessLetter
 STR R0, .Pixel648 //Right leg
 STR R0, .Pixel680
 STR R0, .Pixel712
-CMP R12, #8
+CMP R8, #8
 BLT guessLetter
 STR R0, .Pixel550 //Left arm
 STR R0, .Pixel581
-CMP R12, #9
+CMP R8, #9
 BLT guessLetter
 STR R0, .Pixel552 //Right arm
 STR R0, .Pixel585
-CMP R12, #10  //This many guesses means you're hung!
+CMP R8, #10  //This many guesses means you're hung!
 BLT guessLetter
 MOV R0, #.black
 STR R0, .Pixel519 //Head again
@@ -129,8 +136,8 @@ HALT
 secretWord: .WORD 0
 .WORD 0
 letterGuess: .WORD 0
-setter: .ASCIZ "Setter: Type in word\n"
+setter: .ASCIZ "Setter: Enter word\n"
 player: .ASCIZ "Player: Try a letter\n"
 win: .ASCIZ "You win!\n"
-lose: .ASCIZ "You lose! The word was:"
-wrong: .ASCIZ "Wrong guesses"
+lose: .ASCIZ "You lose! Word was:"
+wrong: .ASCIZ "wrong. "
