@@ -74,7 +74,8 @@ drawPic:
 CMP R8, #1
 BLT guessLetter
 MOV R0, #.brown
-STR R0, .Pixel707 //Upright
+STR R0, .Pixel706 //Upright
+STR R0, .Pixel707 
 STR R0, .Pixel675
 STR R0, .Pixel643
 STR R0, .Pixel611
@@ -132,12 +133,14 @@ MOV R0, #secretWord
 STR R0, .WriteString
 HALT
 
-.ALIGN 512
-secretWord: .WORD 0
-.WORD 0
-letterGuess: .WORD 0
+
+.ALIGN 256
 setter: .ASCIZ "Setter: Enter word\n"
 player: .ASCIZ "Player: Try a letter\n"
 win: .ASCIZ "You win!\n"
 lose: .ASCIZ "You lose! Word was:"
 wrong: .ASCIZ "wrong. "
+
+.ALIGN 512
+secretWord: .BLOCK 128
+letterGuess: .BLOCK 128
