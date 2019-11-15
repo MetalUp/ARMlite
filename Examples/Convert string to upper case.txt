@@ -1,0 +1,27 @@
+
+
+//Input string
+start:
+MOV R0, #string1
+STR R0, .ReadString
+MVN R2, #32
+
+
+loop1: LDRB R1, [R0]
+CMP R1, #0 //look for end of string
+BEQ done
+CMP R1, #97
+BLT next
+CMP R1, #122
+BGT next
+AND R1, R1, R2  //Set bit will ensure upper case
+STRB R1, [R0]
+next: ADD R0, R0, #1
+B loop1
+
+done:
+MOV R0, #string1
+STR R0, .WriteString
+B start
+
+string1: .BLOCK 128

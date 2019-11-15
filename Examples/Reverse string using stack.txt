@@ -4,25 +4,24 @@
 start:
 MOV R0, #string1
 STR R0, .ReadString
-MOV R3, #0  //Count of characters
+
 
 //Push string onto stack
+MOV R2, SP //Take a note of current stack pointer
 loop1: LDRB R1, [R0]
 CMP R1, #0
 BEQ next
 PUSH R1
-ADD R3, R3, #1
 ADD R0, R0, #1
 B loop1
 
 next:
 MOV R0, #string1 //Reset index
-loop2: CMP R3, #0
-BEQ done
+loop2: CMP SP, R3  //Check if we've got all the string back off the stack
+BEQ done 
 POP R1
 STRB R1, [R0]
 ADD R0, R0, #1
-SUB R3, R3, #1
 B loop2
 
 done:
