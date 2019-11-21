@@ -55,15 +55,14 @@ STR R0, .WriteChar
 
 //If there has not been a match, increment the number of misses
 CMP R6, #0
-BNE checkWin
+BNE checkForWin
 ADD R8, R8, #1
 STR R8, .WriteUnsignedNum
 MOV R0, #wrong
 STR R0, .WriteString
 B drawPic
 
-//Check for win
-checkWin:
+checkForWin:
 CMP R9, #4
 BNE drawPic
 MOV R0, #win
@@ -72,9 +71,9 @@ HALT
 
 drawPic:
 CMP R8, #1
-BLT guessLetter
+BLT endDraw
 MOV R0, #.brown
-STR R0, .Pixel706 //Upright
+STR R0, .Pixel739 //Upright
 STR R0, .Pixel707 
 STR R0, .Pixel675
 STR R0, .Pixel643
@@ -85,45 +84,45 @@ STR R0, .Pixel515
 STR R0, .Pixel483
 STR R0, .Pixel451
 CMP R8, #2
-BLT guessLetter
+BLT endDraw
 STR R0, .Pixel452 //Cross beam
 STR R0, .Pixel452
 STR R0, .Pixel453
 STR R0, .Pixel454
 STR R0, .Pixel455
 CMP R8, #3
-BLT guessLetter  
+BLT endDraw  
 MOV R0, #.grey
 STR R0, .Pixel487 //Rope
 CMP R8, #4
-BLT guessLetter
+BLT endDraw
 MOV R0, #.pink
 STR R0, .Pixel519 //Head
 CMP R8, #5
-BLT guessLetter
+BLT endDraw
 MOV R0, #.blue
 STR R0, .Pixel551 //Body
 STR R0, .Pixel583
 STR R0, .Pixel615
 CMP R8, #6
-BLT guessLetter
+BLT endDraw
 STR R0, .Pixel646 //Left leg
 STR R0, .Pixel678
 STR R0, .Pixel710
 CMP R8, #7
-BLT guessLetter
+BLT endDraw
 STR R0, .Pixel648 //Right leg
 STR R0, .Pixel680
 STR R0, .Pixel712
 CMP R8, #8
-BLT guessLetter
+BLT endDraw
 STR R0, .Pixel550 //Left arm
 STR R0, .Pixel581
 CMP R8, #9
-BLT guessLetter
+BLT endDraw
 STR R0, .Pixel552 //Right arm
 STR R0, .Pixel585
-CMP R8, #10  //This many guesses means you're hung!
+endDraw: CMP R8, #10  //This many guesses means you're hung!
 BLT guessLetter
 MOV R0, #.black
 STR R0, .Pixel519 //Head again
@@ -134,7 +133,7 @@ STR R0, .WriteString
 HALT
 
 
-.ALIGN 256
+
 setter: .ASCIZ "Setter: Enter word\n"
 player: .ASCIZ "Player: Try a letter\n"
 win: .ASCIZ "You win!\n"
@@ -142,5 +141,6 @@ lose: .ASCIZ "You lose! Word was:"
 wrong: .ASCIZ "wrong. "
 
 .ALIGN 512
-secretWord: .BLOCK 128
-letterGuess: .BLOCK 128
+secretWord: .WORD
+.WORD 0  //Keep a space
+letterGuess: .WORD
