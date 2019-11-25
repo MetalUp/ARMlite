@@ -12,15 +12,15 @@ captureWord:
 MOV R0, #setter
 STR R0, .WriteString
 MOV R0, #secretWord 
-STR R0, .ReadString
+STR R0, .ReadSecret //Permits entry without displaying text (like a password)
 
 guessLetter:
 MOV R0, #player
 STR R0, .WriteString
-MOV R0, #letterGuess
-STR R0, .ReadString
-LDR R2, letterGuess
-AND R2,R2, #255 //Limit to one character only
+waitForKey: LDR R2, .LastKeyAndReset
+CMP R2, #0
+BEQ waitForKey
+ORR R2,R2,#32  //Forces the character to be lower case
 MOV R6, #0  //Set to 1 if a NEW match is found
 MOV R7, #0  //This will increment 0 > 8 > 16> 24 as a shift amount to select successive characters
 
@@ -37,7 +37,8 @@ LDR R1, secretWord
 AND R0, R1, R5
 MOV R1, #0 //Reset so it does not reveal word on UI when paused
 LSR R4, R0, R7  //Get the char back to position 1
-CMP R4, R2  //TODO, check for upper/lower case by XOR #32 & try again
+ORR R4,R4, #32  //Force the character to lower case
+CMP R4, R2  
 BNE notAMatch
 ORR R3,R3,R0 
 ADD R9,R9,#1
@@ -132,15 +133,11 @@ MOV R0, #secretWord
 STR R0, .WriteString
 HALT
 
-
-
-setter: .ASCIZ "Setter: Enter word\n"
+setter: .ASCIZ "Setter: Enter word (4 chars)\n"
 player: .ASCIZ "Player: Try a letter\n"
 win: .ASCIZ "You win!\n"
 lose: .ASCIZ "You lose! Word was:"
 wrong: .ASCIZ "wrong. "
 
 .ALIGN 512
-secretWord: .WORD
-.WORD 0  //Keep a space
-letterGuess: .WORD
+secretWord: 0
