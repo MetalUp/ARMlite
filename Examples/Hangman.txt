@@ -1,12 +1,12 @@
 //Register uses:
-//R0 multiple, temporary, purposes
-//R1 secret word, loaded from memory (loaded & cleared each guess so it does not show on the UI)
+//multiple, temporary, purposes
+//R1 mask for handling individual characters within word
 //R2 current letter guess
-//R3 successful guesses in right place(s), otherwise zeros
-//R4 holds the built up result (of underscores and correct letters)
+MOV R3, #0 //successful guesses in right place(s), otherwise zeros
+//R4 holds the character currently being matched
 //R5 to R7 temporary use in processing
-//R8 number of wrong guesses
-//R9 number of matches made
+MOV R8, #0 //number of wrong guesses
+MOV R9, #0 //number of matches made
 
 captureWord:
 MOV R0, #setter
@@ -25,17 +25,16 @@ MOV R6, #0  //Set to 1 if a NEW match is found
 MOV R7, #0  //This will increment 0 > 8 > 16> 24 as a shift amount to select successive characters
 
 checkForMatch:
-MOV R5, #0xff  //The mask for character 1
-LSL R5, R5, R7 //Shift mask to character of interest (first shift will be zero!)
-AND R0,R3,R5  //Apply mask to past guesses
+MOV R1, #0xff  //The mask for character 1
+LSL R1, R1, R7 //Shift mask to character of interest (first shift will be zero!)
+AND R0,R3,R1  //Apply mask to past guesses
 CMP R0, #0 
 BEQ cont //If char position is NOT empty this char has been correctly guessed, so...
 LSR R4,R0,R7
 B writeChar
 cont: 
-LDR R1, secretWord
-AND R0, R1, R5
-MOV R1, #0 //Reset so it does not reveal word on UI when paused
+LDR R0, secretWord
+AND R0, R0, R1
 LSR R4, R0, R7  //Get the char back to position 1
 ORR R4,R4, #32  //Force the character to lower case
 CMP R4, R2  
