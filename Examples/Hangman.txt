@@ -1,5 +1,5 @@
 //Register uses:
-//multiple, temporary, purposes
+//R0 multiple, temporary, purposes
 //R1 mask for handling individual characters within word
 //R2 current letter guess
 MOV R3, #0 //successful guesses in right place(s), otherwise zeros
