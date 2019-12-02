@@ -104,9 +104,12 @@ checkForMaxLength:
       beq createApple //If so, loop back to creating the apple
       b moveSnake /Otherwise just repeat the move cycle
 gameWin:
-      mov r0, #message
-      str r0,.WriteString //Write message as text into output window
+      mov r0, #win
+      b +.2
 gameOver:
+      mov r0, #over
+      str r0,.WriteString
       halt //To stop program execution running into data area
-message: .ASCIZ " You Win"
+win: .ASCIZ " You Win!"
+over: .ASCIZ " Game Over!"
 body: dat 0 //Initial front of queue (screen address for tail)
