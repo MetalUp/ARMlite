@@ -8,22 +8,23 @@ defineRegisters:
       mov r6, #body //Pointer front of queue, initialised to first data loc
       add r7,r6,#4 //Pointer to head address in body data (1 after tail)
       mov r9, #0 //ASCII value of last key pressed
-      mov r10, #12284 //Constant - the last screen memory offset
       mov r11, #4092 //Constant for masking
       mov r12, #68 //Current direction of movement, initialised to 'right'
 
-InitialisePointers:
+// Initialise
       str r3, [r6] //r4 points to the tail address
       str r4, [r7] //r3 points to the head address
-drawSnake:
-      mov r1, #.green
-      str r1,[r3+r2] //Tail
-      str r1,[r4+r2] //Head
+      mov r1, #.green  //Draw 2-segment snake in initial position
+      str r1,[r3+r2]
+      str r1,[r4+r2] 
+
 createApple:
       ldr r5,.Random // gets a random 32 bit pattern
-      and r5,r5,r11 // r11 has 1023*4
-      cmp r5,r10 // r10 has 767*4
-      bgt createApple // restrict random range
+      mov r0, #0x3ffc // Limit random to 14 bits (just larger than max pixel number)
+      and r5,r5,r0 
+      mov r0, #12284 //Max pixel number
+      cmp r5,r0
+      bgt createApple
       cmp r5,r4 // Make sure apple is not located on head of snake
       beq createApple 
 moveSnake:
@@ -54,7 +55,8 @@ down:
       cmp r12,#87
       beq dontChangeDirection
       add r4,r4,#256 //64*4 moves down one row on screen
-      cmp r4,r10
+      mov r0, #12284
+      cmp r4,r0
       bgt gameOver
       b reDraw
 up:
@@ -105,7 +107,7 @@ checkForMaxLength:
       b moveSnake /Otherwise just repeat the move cycle
 gameWin:
       mov r0, #win
-      b +.2
+      b .+2
 gameOver:
       mov r0, #over
       str r0,.WriteString
