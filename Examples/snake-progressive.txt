@@ -56,7 +56,10 @@ left: SUB R4,R4,#4 //-4 moves left 1 pixel
       BEQ gameOver
       B reDraw  //Not strictly necessary, but added for consistency
 reDraw:
-      //ADD R4,R4, #4 //Increment head position
+      //First check if the snake would be crossing itself
+      ldr r0,[r4+r2] // read, from screen, contents of next pixel
+      cmp r0,#.green //If it is snake colour...
+      beq gameOver
       STR R1,[R4+R2] //Draw new head
       RFE
 
