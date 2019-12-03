@@ -77,7 +77,8 @@ newRandom:      LDR R10,.Random // gets a random 32 bit pattern
       MOV R0, #12284 //Max pixel number
       CMP R10,R0
       BGT newRandom //'Throw again'
-      CMP R10,R4 // Test that apple is not located on head of snake
+      LDR R0, [R10+R2] //Test that apple will not be on the snake
+      CMP R0,#.green 
       BEQ newRandom 
       MOV R0, #.red
       STR R0, [R10 + R2] //Draw apple
