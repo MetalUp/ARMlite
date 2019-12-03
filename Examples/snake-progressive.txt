@@ -1,11 +1,12 @@
 //Define registers 
-// R0 used for many temporary purposes
-// R1 used for colours
+      // R0 used for many temporary purposes
+      // R1 used for colours
       MOV R2,#.PixelScreen //Constant
-// R3 Tail position
-// R4 Head position
-     mov r5, #0 //Apple position
-// R9 holds ASCII value of last key pressed
+      // R3 Tail position
+      // R4 Head position
+      // R9 holds ASCII value of last key pressed
+      //R10 hold Apple position
+      MOV R11, #0 //Score of apples eaten
 
 //Set up interrupts - but don't enable yet
       MOV R0, #update
@@ -23,6 +24,7 @@
       MOV R1, #.green 
       STR R1,[R3+R2] //Draw 2-segment snake
       STR R1,[R4+R2] 
+      BL createApple
       STR R0, .InterruptRegister //Now we are ready to handle interrupts
 
 mainLoop: b mainLoop //Just keeps the processor running, pending interrupts
@@ -61,7 +63,26 @@ reDraw:
       cmp r0,#.green //If it is snake colour...
       beq gameOver
       STR R1,[R4+R2] //Draw new head
+      CMP R4, R10    //Check if apple eaten
+      BNE .+3        //If not, skip to return
+      ADD R11,R11, #1 //Incement score
+      BL createApple
       RFE
+
+//Generates random valid pixel position in R10
+createApple: push {R0, LR}
+newRandom:      LDR R10,.Random // gets a random 32 bit pattern
+      MOV R0, #0x3ffc // Limit random to 14 bits (just larger than max pixel number)
+      AND R10,R10,R0 
+      MOV R0, #12284 //Max pixel number
+      CMP R10,R0
+      BGT newRandom //'Throw again'
+      CMP R10,R4 // Test that apple is not located on head of snake
+      BEQ newRandom 
+      MOV R0, #.red
+      STR R0, [R10 + R2] //Draw apple
+      POP {R0, LR}
+      RET
 
 //Called by keyboard interrupt
 //If valid key (W,A,S,D) has been pressed, transfer this to R9
