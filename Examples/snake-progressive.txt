@@ -4,6 +4,8 @@
       MOV R2,#.PixelScreen //Constant
       // R3 Tail position
       // R4 Head position
+      // R5 Front of queue (address of snake's tail)
+      // R6 Back of queue (address of snake's head)
       // R9 holds ASCII value of last key pressed
       //R10 hold Apple position
       MOV R11, #0 //Score of apples eaten
@@ -21,6 +23,10 @@
 //Initialise game
       MOV R3, #1084 //Initialise tail and ...
       MOV R4, #1088 //Head next to it (4 bytes = 1 word = 1 pixel)
+      MOV R5, #body //Pointer front of queue, initialised to first data loc
+      ADD R6,R5,#4 //Pointer to head address in body data (1 after tail)
+      STR R3, [R5] //r4 points to the tail address
+      STR R4, [R6] //r3 points to the head address
       MOV R1, #.green 
       STR R1,[R3+R2] //Draw 2-segment snake
       STR R1,[R4+R2] 
@@ -63,10 +69,17 @@ reDraw:
       cmp r0,#.green //If it is snake colour...
       beq gameOver
       STR R1,[R4+R2] //Draw new head
-      CMP R4, R10    //Check if apple eaten
-      BNE .+3        //If not, skip to return
-      ADD R11,R11, #1 //Incement score
-      BL createApple
+      ADD R6,R6,#4 //Increment the back of queue pointer (by 1 word = 4 bytes)
+      STR R4, [R6] //Store the new head pixel number at the rear of the queue
+      CMP R4, R10    //Check if head is on apple
+      BEQ eat  
+      MOV R0, #.white
+      STR R0, [R3+R2] //Paint the current tail pixel white      
+      ADD R5,R5,#4 //Increment  front of queue pointer (next segment becomes tail)
+      LDR R3,[R5]  //Retrieve pixel number for the new tail
+      B .+3 //Then skip to RFE
+eat:  ADD R11,R11, #1 //Increment score
+      BL createApple 
       RFE
 
 //Generates random valid pixel position in R10
@@ -111,3 +124,5 @@ gameOver: MOV R0, #over
       HALT //To stop program execution running into data area
 over: .ASCIZ " Game Over!\n"
 score: .ASCIZ "Your score: "
+.ALIGN 256
+body: //The 'queue' of body segments from here onwards
