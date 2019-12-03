@@ -104,5 +104,9 @@ updateLastKey:
 
 gameOver: MOV R0, #over
       STR R0,.WriteString
+      MOV R0, #score
+      STR R0,.WriteString
+      STR R11, .WriteSignedNum
       HALT //To stop program execution running into data area
 over: .ASCIZ " Game Over!\n"
+score: .ASCIZ "Your score: "
