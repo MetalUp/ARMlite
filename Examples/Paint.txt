@@ -1,0 +1,18 @@
+//Set up interrupts
+MOV R0, #paint
+STR R0,.PixelISR
+MOV R0,#1
+STR R0,.PixelMask //Set pixel click interrupts on
+STR R0,.InterruptRegister //Enable all interrupts
+
+mainLoop: B mainLoop
+
+paint: 
+PUSH {R0,R1, R2}
+LDR R0, .LastPixelClicked
+LSL R0,R0,#2 //Multiply pixel number by 4 to get address
+MOV R1, #.red
+MOV R2, #.PixelScreen
+STR R1, [R0+R2]
+POP {R0,R1,R2}
+RFE
