@@ -9,6 +9,7 @@
 // R9 holds ASCII value of last key pressed 
 // R10 hold Apple position
       MOV R11, #0 //Score of apples eaten
+      MOV R12, #end //Constant: address of end of body data area
 
 //Set up interrupts - but don't enable yet
       MOV R0, #update
@@ -72,12 +73,18 @@ reDraw:
       MOV R1, #.green
       STR R1,[R4+R2] //Draw new head
       ADD R6,R6,#4   //Increment the back of queue pointer (by 1 word = 4 bytes)
+      CMP R6,R12 //Check pointer is still within end of queue data area
+      BLT  .+2
+      MOV R6, #body //If not loop pointer back to start of body data
       STR R4, [R6]   //Store the new head pixel number at the rear of the queue
       CMP R4, R10    //Check if head is on apple
       BEQ eat  
       MOV R0, #.white
       STR R0, [R3+R2] //Paint the current tail pixel white      
       ADD R5,R5,#4 //Increment front of queue pointer (next segment becomes tail)
+      CMP R5,R12 //Check pointer is still within end of queue data area
+      BLT  .+2
+      MOV R5, #body //If not loop pointer back to start of body data
       LDR R3,[R5]  //Retrieve pixel number for the new tail
       BNE .+3        //Skip to RFE
 eat:  ADD R11,R11, #1 //Increment score
@@ -128,5 +135,5 @@ gameOver: MOV R0, #over
 over: .ASCIZ " Game Over!\n"
 score: .ASCIZ "Your score: "
 .ALIGN 256
-body: //The 'queue' of body segments from here onwards
-
+body: .BLOCK 3072 //The 'queue' of body segments from here onwards
+end:
