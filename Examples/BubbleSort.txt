@@ -8,12 +8,12 @@
       // R5 spare index into array
       // R6 first in pair
       // R7 second in pair
-      // R8 Indicates is any pair swapped on latest pass (of inner loop) 
+      // R8 ? 
 startOfOuterLoop: 
       MOV R3, #0  //reset inner loop counter to zero
       SUB R4, R1, R2  //set innerloop max to  data length - outerLoopCounter...
       SUB R4, R4, #4  //...minus 4 more
-      MOV R8, #0  //reset 'swapped'  for next pass    
+      MOV R8, #0   
 innerLoop:
       LDR R6, [R3+R0]  //Load first value (index + base)
       ADD R5, R3, #4 //Generate index for second value in pair
@@ -24,7 +24,7 @@ innerLoop:
 swap: 
       STR R7, [R3+R0]
       STR R6, [R5+R0]
-      MOV R8, #1  //Flag that a swap has taken place
+      MOV R8, #1
 continueInnerLoop:
       ADD R3, R3, #4
       CMP R3, R4 //Check if reached the end
