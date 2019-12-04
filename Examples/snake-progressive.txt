@@ -4,12 +4,17 @@
       MOV R2,#.PixelScreen //Constant
 // R3 Tail position
 // R4 Head position
+// R9 holds ASCII value of last key pressed 
 
 //Set up interrupts - but don't enable yet
       MOV R0, #update
       STR R0, .ClockISR
       MOV R0,#0x19
       STR R0,.ClockInterruptFrequency
+      MOV R0, #keyPress
+      STR R0, .KeyboardISR
+      MOV R0, #1
+      STR R0, .KeyboardMask
 
 //Initialise game
       MOV R3, #1084 //Initialise tail and ...
@@ -23,7 +28,42 @@ mainLoop: b mainLoop //Just keeps the processor running, pending interrupts
 
 //Interrupt driven
 update:
-      ADD R4,R4, #4 //Increment head position
+//Switch on direction of last key
+      CMP R9,#87 //W key
+      BEQ up
+      CMP R9,#65 //A key
+      BEQ left
+      CMP R9,#83 //S key
+      BEQ down
+      // By default the snake will move right
+right:ADD R4,R4,#4   //+4 (bytes) moves right one pixel
+      B reDraw
+down: ADD R4,R4,#256 //+64*4 moves down one row
+      B reDraw
+up:   SUB R4,R4,#256 //-64*4 moves up one row
+      B reDraw
+left: SUB R4,R4,#4   //-4 moves left one pixel
+      B reDraw  //Not strictly necessary, but added for consistency
+reDraw:  
+      MOV R1, #.green
       STR R1,[R4+R2] //Draw new head
+      RFE
+
+//Called by keyboard interrupt
+//If valid key (W,A,S,D) has been pressed, transfer this to R9
+keyPress: PUSH {R0}
+      LDR R0,.LastKey //Read the last key pressed (but don't wait for one)
+      CMP R0,#87 //W key
+      BEQ updateLastKey
+      CMP R0,#65 //A key
+      BEQ updateLastKey
+      CMP R0,#83 //S key
+      BEQ updateLastKey
+      CMP R0,#68 //D key
+      BEQ updateLastKey
+      B .+2  //If not a valid new key don't change last key
+updateLastKey:
+      MOV R9, R0
+      POP {R0}
       RFE
 
