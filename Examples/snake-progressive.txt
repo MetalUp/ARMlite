@@ -9,6 +9,8 @@
       // R9 holds ASCII value of last key pressed
       //R10 hold Apple position
       MOV R11, #0 //Score of apples eaten
+      MOV R12, #body
+      ADD R12, R12, #3072 //R12 now a constant: address of end of body data area
 
 //Set up interrupts - but don't enable yet
       MOV R0, #update
@@ -43,10 +45,10 @@ update:
       BEQ left
       CMP R9,#83 //S key
       BEQ down
-      // By default the snake will move right
+      // By default the snake will move right 
 right:ADD R4,R4,#4 //+4 (bytes) moves right 1 pixel
-      AND R0,R4,#256
-      CMP R0,#256
+      AND R0,R4,#252
+      CMP R0,#0
       BEQ gameOver
       B reDraw
 down: ADD R4,R4,#256 //+64*4 moves down one row
@@ -70,12 +72,18 @@ reDraw:
       beq gameOver
       STR R1,[R4+R2] //Draw new head
       ADD R6,R6,#4 //Increment the back of queue pointer (by 1 word = 4 bytes)
+      CMP R6,R12 //Check pointer is still within end of queue data area
+      BLT  .+2
+      MOV R6, #body //If not loop pointer back to start of body data
       STR R4, [R6] //Store the new head pixel number at the rear of the queue
       CMP R4, R10    //Check if head is on apple
       BEQ eat  
       MOV R0, #.white
       STR R0, [R3+R2] //Paint the current tail pixel white      
       ADD R5,R5,#4 //Increment  front of queue pointer (next segment becomes tail)
+      CMP R5,R12 //Check pointer is still within end of queue data area
+      BLT  .+2
+      MOV R5, #body //If not loop pointer back to start of body data
       LDR R3,[R5]  //Retrieve pixel number for the new tail
       B .+3 //Then skip to RFE
 eat:  ADD R11,R11, #1 //Increment score
