@@ -3,33 +3,31 @@
       LDR R1, arrayLength  
       LSL R1, R1, #2  //Multiply this by 4 (for byte count)
       MOV R2, #0   //outerLoop counter initialized
-      // R3   innerLoop counter
+      // R3 innerLoop counter
       // R4 length of innerLoop
-      // R5 working pointer into array
+      // R5 spare index into array
       // R6 first in pair
       // R7 second in pair
-      // R8 If any pair swapped on this pass (of inner loop) 
-// Start of outer loop 
-      MOV R3, #0  //start inner loop counter at zero
-      MOV R4, R1  
-      SUB R4, R4, R2  //set innerloop max to  data length - outerLoopCounter...
+      // R8 Indicates is any pair swapped on latest pass (of inner loop) 
+startOfOuterLoop: 
+      MOV R3, #0  //reset inner loop counter to zero
+      SUB R4, R1, R2  //set innerloop max to  data length - outerLoopCounter...
       SUB R4, R4, #4  //...minus 4 more
-      MOV R8, #0  //reset swapped      
+      MOV R8, #0  //reset 'swapped'  for next pass    
 innerLoop:
-      MOV R5, R0
-      ADD R5, R5, R3
-      LDR R6, [R5]  //first value
-      LDR R7, [R5+4] //second value (this syntax is convenient here!)
+      LDR R6, [R3+R0]  //Load first value (index + base)
+      ADD R5, R3, #4 //Generate index for second value in pair
+      LDR R7, [R5+R0] //Load second value
       CMP R6, R7
       BGT swap
       B continueInnerLoop
 swap: 
-      STR R7, [R5]
-      STR R6, [R5 + 4]
+      STR R7, [R3+R0]
+      STR R6, [R5+R0]
       MOV R8, #1  //Flag that a swap has taken place
 continueInnerLoop:
       ADD R3, R3, #4
-      CMP R3, R4
+      CMP R3, R4 //Check if reached the end
       BLT innerLoop
 continueOuterLoop:
       CMP R8, #0
