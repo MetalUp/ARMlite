@@ -4,6 +4,7 @@
       // R3 Tail position
       // R4 Head position
       // R7 ASCII value of last key pressed 
+      MOV R8, #0 //Score of apples eaten
       // Constants:
       MOV R10,#.PixelScreen
       MOV R11, #.green //Colour of snake
@@ -67,11 +68,10 @@ reDraw:
       BEQ gameOver
       CMP R0, R12      //Check if pixel is apple colour
       BNE .+3          //Skip to RFE
-      ADD R11,R11, #1  //Increment score
+      ADD R8,R8, #1  //Increment score
       BL createApple
       STR R11,[R4+R10] //Draw new head
       RFE
-
 
 //Called by keyboard interrupt
 //If valid key (W,A,S,D) has been pressed, transfer this to R7
@@ -108,7 +108,9 @@ newRandom: LDR R1,.Random // gets a random 32 bit pattern
 
 gameOver: MOV R0, #over
       STR R0,.WriteString
+      MOV R0, #score
+      STR R0,.WriteString
+      STR R8, .WriteSignedNum
       HALT //To stop program execution running into data area
 over: .ASCIZ " Game Over!\n"
-
-
+score: .ASCIZ "Your score: "
