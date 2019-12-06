@@ -73,13 +73,19 @@ reDraw:
       CMP R0,R11 	   //If it is snake colour...
       BEQ gameOver
       ADD R6,R6,#4   //Increment the back of queue pointer (by 1 word = 4 bytes)
+      CMP R6,#limit //Check pointer is still within end of queue data area
+      BLT .+2
+      MOV R6, #body //If not loop pointer back to start of body data
       STR R4, [R6]   //Store the new head pixel number at the rear of the queue
-      CMP R0, R12      //Check if pixel is apple colour
+      CMP R0, R12    //Check if pixel is apple colour
       BEQ eat
       MOV R0, #.white
       STR R0, [R3+R10] //Paint the current tail pixel white      
-      ADD R5,R5,#4 //Increment front of queue pointer (next segment becomes tail)
-      LDR R3,[R5]  //Retrieve pixel number for the new tail
+      ADD R5,R5,#4   //Increment front of queue pointer (next segment becomes tail)
+      CMP R5, #limit //Check pointer is still within end of queue data area
+      BLT .+2
+      MOV R5, #body //If not loop pointer back to start of body data
+      LDR R3,[R5]    //Retrieve pixel number for the new tail
       B .+3          //Skip to RFE
  eat: ADD R8,R8, #1  //Increment score
       BL createApple
@@ -128,4 +134,5 @@ gameOver: MOV R0, #over
 over: .ASCIZ " Game Over!\n"
 score: .ASCIZ "Your score: "
 .ALIGN 256
-body: //The 'queue' of body segments from here onwards
+body: .BLOCK 3072 //The 'queue' of body segments from here onwards
+limit: //1 past end of queue data
