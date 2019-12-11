@@ -1,18 +1,41 @@
 //Set up interrupts
-MOV R0, #paint
-STR R0,.PixelISR
-MOV R0,#1
-STR R0,.PixelMask //Set pixel click interrupts on
-STR R0,.InterruptRegister //Enable all interrupts
+      MOV R0, #paint
+      STR R0,.PixelISR
+      MOV R0,#1
+      STR R0,.PixelMask //Set pixel click interrupts on
+      MOV R0, #switchColour
+      STR R0,.KeyboardISR
+      MOV R0,#1
+      STR R0,.KeyboardMask //Set pixel click interrupts on
+      STR R0,.InterruptRegister //Enable all interrupts
+//Set up colour
+      MOV R12, #.red
 
-mainLoop: B mainLoop
+mainLoop: 
+    B mainLoop //Does nothing at present
 
-paint: 
-PUSH {R0,R1, R2}
-LDR R0, .LastPixelClicked
-LSL R0,R0,#2 //Multiply pixel number by 4 to get address
-MOV R1, #.red
-MOV R2, #.PixelScreen
-STR R1, [R0+R2]
-POP {R0,R1,R2}
-RFE
+//Interrupt driven routine to paint a pixel that user clicks on
+//Colour is specified in R12 (global variable)
+paint:PUSH {R1, R2}
+      LDR R1, .LastPixelClicked
+      LSL R1,R1,#2 //Multiply pixel number by 4 to get byte address
+      MOV R2, #.PixelScreen
+      STR R12, [R1+R2]
+      POP {R1,R2}
+      RFE
+
+//Keyboard interrupt driven
+switchColour:
+      PUSH R0
+      LDR R0, .LastKey
+      CMP R0, #82 //'R'
+      BNE .+2
+      MOV R12, #.red
+      CMP R0, #71 //'G'
+      BNE .+2
+      MOV R12, #.green
+      POP R0
+      RFE
+
+   
+ 

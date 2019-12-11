@@ -134,5 +134,5 @@ gameOver: MOV R0, #over
 over: .ASCIZ " Game Over!\n"
 score: .ASCIZ "Your score: "
 .ALIGN 256
-body: .BLOCK 3072 //The 'queue' of body segments from here onwards
+body: .BLOCK 3072 //For the 'queue' of body segments
 limit: //1 past end of queue data

@@ -1,0 +1,34 @@
+// ARMlite equivalent divide Rcnt=R4, Ra=R0, Rb=R1, Rc=R2
+// using AQA instructions for numbers in 30 bits only
+// divisor in R1, dividend in R0
+main: LDR R0,.InputNum
+LDR R1,.InputNum
+BL divide
+// result in R2, remainder in R0
+STR R2,.WriteUnsignedNum
+STR R3,.WriteUnsignedNum
+B main
+
+//Divides integer  R0 by integer R1, returning the quotient in R2 & remainder in R3
+//Input numbers must be positive numbers of 30 bits or less
+divide:
+PUSH {R0,R1,R4,LR}
+MOV R4,#1
+div1:  CMP R0,R1 
+BLT divNext // loop until divisor >= dividend
+LSL R1,R1,#1
+LSL R4,R4,#1
+B div1
+divNext:    MOV R2,#0
+div2:  CMP R1,R0
+BGT divNoSub
+SUB R0,R0,R1
+ADD R2,R2,R4
+divNoSub: LSR R4,R4,#1
+LSR R1,R1,#1 
+CMP R4,#0
+BNE div2
+MOV R3, R0
+POP {R0,R1,R4,LR}
+RET
+

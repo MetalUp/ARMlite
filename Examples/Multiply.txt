@@ -1,0 +1,36 @@
+LDR R0, .InputNum
+ MOV R1, #1
+ loop:   bl multiply
+    STR R0, .WriteUnsignedNum
+    MOV R3, #120 //ASCII for 'x'
+    STR R3, .WriteChar
+    STR R1, .WriteUnsignedNum
+    MOV R3, #61 //ASCII for '='
+    STR R3, .WriteChar
+    STR R2, .WriteUnsignedNum
+    MOV R3, #10 //ASCII for new line
+    STR R3, .WriteChar
+    ADD R1, R1, #1
+    CMP R1, #10
+    BLT loop
+    HALT
+
+
+multiply:
+    PUSH {R0,R1,R3,LR}
+    MOV R2, #0  // result
+processRightmostDigit:
+    AND R3, R1,#1  //To test rightmost bit
+    CMP R3, #0
+    BEQ skip       //Rightmost bit is a 0
+    ADD R2,R2, R0
+skip:
+    LSR R1,R1, #1
+    CMP R1, #0    //If there are no more digits
+    BEQ end
+    LSL R0,R0,#1
+    B processRightmostDigit
+end:
+    POP {R0,R1,R3,LR}
+    RET
+

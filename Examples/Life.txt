@@ -91,4 +91,4 @@ nextCellSkippingLRBorders: //R3 pixel index, R0 used locally
 
       HALT
       .ALIGN 1024
-screen2: .DATA
+screen2: 0
