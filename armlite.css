@@ -1,7 +1,4 @@
 ﻿:root {
-     --col1: 20px;
-     --col2: 350px;
-     --col3: 480px;
      --posMem: 700px;
      --font1: Segoe UI,Open Sans,Verdana,Arial,Helvetica,sans-serif;
      --font-size1:16pt;
@@ -36,15 +33,6 @@ body.binary {
     --posOther: 300px;
 }
 
-body.profile-1 {
-    --displayProgram: none;
-    --col2: 20px;
-    --col3: 150px;
-    --posMem: 350px;
-    --ur: none;
-    --flags: none;
-}
-
 .title {
     display: block;
     font-family: var(--font1);
@@ -75,7 +63,7 @@ body.profile-1 {
     display: var(--displayProgram);
     width: 300px;
     position: absolute;
-    left: var(--col1);
+    left: 20px;
     top: 0px;
 }
 
@@ -184,7 +172,7 @@ body.profile-1 {
     display: block;
     width: 300px;
     position: absolute;
-    left: var(--col2);
+    left: 350px;
     top: 0px;
     height: 100%;
 }
@@ -385,7 +373,7 @@ button img {
     display: block;
     position: absolute;
     top: 290px;
-    left: var(--col2);
+    left: 350px;
     width: 320px;
 }
 #pixels, #chars, #outer_console, #input, #input input {
@@ -514,6 +502,11 @@ float: left;
     background: white;
 }
 
+#data {
+    margin-left: 48px;
+    margin-top: 10px;
+    font-size: 12pt;
+}
 button#clear {
     float: right;
     margin-right: 0;
@@ -523,7 +516,10 @@ button#clear {
     position: absolute;
     top: 645px;
     font-family: var(--font1);
-    font-size: var(--font-size2);
+    font-size: 12pt;
+}
+#demo {
+    color: white;
 }
 .links a {
     margin-right: 20px;
