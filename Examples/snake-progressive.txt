@@ -33,13 +33,24 @@ update:
       CMP R7,#83 //S key
       BEQ down
 // By default the snake will move right
-right:ADD R4,R4,#4  //+4 (bytes) moves right one pixel
+right:ADD R4,R4,#4 //+4 (bytes) moves right one pixel
+      AND R0,R4,#255
+      CMP R0,#0
+      BEQ gameOver
       B reDraw
 down: ADD R4,R4,#256 //+64*4 moves down one row
+      MOV R0, #12284 // One past the last valid pixel
+      CMP R4,R0
+      BGT gameOver
       B reDraw
 up:   SUB R4,R4,#256 //-64*4 moves up one row
+      CMP R4,#0
+      BLT gameOver
       B reDraw
 left: SUB R4,R4,#4 //-4 moves left one pixel
+      AND R0,r4,#255
+      CMP R0,#252
+      BEQ gameOver
 reDraw: 
       STR R11,[R10+R4] //Draw new head
       RFE
@@ -60,3 +71,7 @@ updateLastKey:
       MOV R7, R0
       POP {R0}
       RFE
+gameOver: MOV R0, #over
+      STR R0,.WriteString
+      HALT //To stop program execution running into data area
+over: .ASCIZ " Game Over!\n"
