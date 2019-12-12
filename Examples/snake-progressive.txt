@@ -58,23 +58,29 @@ left: SUB R4,R4,#4 //-4 moves left one pixel
       AND R0,r4,#255
       CMP R0,#252
       BEQ gameOver
-reDraw: 
+reDraw:
 //First check if the snake would be crossing itself
       LDR R0,[R10+R4] // read, from screen, contents of next pixel
-      CMP R0,R11  //If it is snake colour...
+      CMP R0,R11 //If it is snake colour...
       BEQ gameOver
+      STR R11,[R10+R4] //Draw new head
       ADD R6,R6,#4 //Increment the back of queue pointer (by 1 word = 4 bytes)
+      CMP R6,R12 //Check pointer is still within end of queue data area
+      BLT .+2
+      MOV R6, #body //If not loop pointer back to start of body data
       STR R4, [R6] //Store the new head pixel number at the rear of the queue
       CMP R0, R12 //Check if pixel is apple colour
-      BEQ eat
+      BEQ eat 
       MOV R0, #.white
       STR R0, [R10+R3] //Paint the current tail pixel white 
-      ADD R5,R5,#4 //Increment front of queue pointer 
+      ADD R5,R5,#4 //Increment front of queue pointer
+      CMP R5,#limit //Check pointer is still within end of queue data area
+      BLT .+2
+      MOV R5, #body //If not loop pointer back to start of body data
       LDR R3,[R5] //Retrieve pixel number for the new tail
       B .+3 //Skip to RFE
 eat:  ADD R8,R8, #1 //Increment score
-      BL createApple
-      STR R11,[R10+R4] //Draw new head
+      BL createApple 
       RFE
 //Called by keyboard interrupt
 //If valid key (W,A,S,D) has been pressed, transfer this to R9
@@ -116,4 +122,5 @@ gameOver: MOV R0, #over
 over: .ASCIZ " Game Over!\n"
 score: .ASCIZ "Your score: "
       .ALIGN 256
-body: //The 'queue' of body segments from here onwards
+body: .BLOCK 3072 //For the 'queue' of body segments
+limit: //1 past end of queue data
