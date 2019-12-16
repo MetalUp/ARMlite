@@ -1,4 +1,7 @@
 ﻿:root {
+     --col1: 20px;
+     --col2: 350px;
+     --col3: 480px;
      --posMem: 700px;
      --font1: Segoe UI,Open Sans,Verdana,Arial,Helvetica,sans-serif;
      --font-size1:16pt;
@@ -13,16 +16,31 @@
      --color1:  rgb(68, 114, 196);
      --pixelSize: 5px;
      --charSize: 10px;
+     --charFontSize: 14px;
      --ur: block;
      --flags: block;
      --posOther: 130px;
 }
 
 body{
-
     background-color: var(--color1);
-    --displayProgram: block;
     font-size: var(--font-size2);
+    --displaySource: block;
+    --displayMemory: block;
+    --displayRegisters: block;
+    --displayCounter: block;
+    --displayInstruction: block;
+    --displayTitles: block;
+    --ioLeft: var(--col2);
+    --ioTop: 290px;
+    --ioWidth: 320px;
+    --processorLeft: var(--col2);
+    --processorTop: 0px;
+    --processorWidth: 320px;
+    --displaySave: block;
+    --displayEdit: block;
+    --displayStep: block;
+    --displaySlow: block;
 }
 
 body.binary {
@@ -33,8 +51,32 @@ body.binary {
     --posOther: 300px;
 }
 
+body.profile-player {
+    --pixelSize: 10px;
+    --charSize: 20px;
+    --charFontSize: 28px;
+    --displaySource: none;
+    --displayMemory: none;
+    --displayRegisters: none;
+    --displayCounter: none;
+    --displayInstruction: none;
+    --displayTitles: none;
+    --ur: none;
+    --flags: none;
+    --ioLeft: var(--col2);
+    --ioTop: 10px;
+    --ioWidth: 640px;
+    --processorLeft: var(--col1);
+    --processorTop: 50px;
+    --processorWidth: 300px;
+    --displaySave: none;
+    --displayEdit: none;
+    --displayStep: none;
+    --displaySlow: none;
+}
+
 .title {
-    display: block;
+    display: var(--displayTitles);
     font-family: var(--font1);
     font-size: var(--font-size1);
     color: white;
@@ -43,11 +85,6 @@ body.binary {
 #program > .title, #processor > .title, #io > .title, .memory > .title {
     text-align: center; 
 }
-
-#program {
-    display: var(--displayProgram);
-}
-
 .value {
     display: block;
     font-family: var(--font2);
@@ -60,12 +97,14 @@ body.binary {
 }
 
 #program {
-    display: var(--displayProgram);
+    display: block;
     width: 300px;
     position: absolute;
-    left: 20px;
+    left: var(--col1);
     top: 0px;
 }
+
+
 
 #program-controls {
     display: block;
@@ -100,18 +139,24 @@ body.binary {
  button:hover, button#clear:hover, button#load:hover {
     border-color: white;
 }
-.edit #edit {
+
+#program button#save {
+    display: var(--displaySave);
+}
+#program.edit button#edit {
     display: none;
 }
+#program button#edit {
+    display: var(--displayEdit);
+}
+
 #program #submit, #program #revert {
     display: none;
 }
 #program.edit #submit, #program.edit #revert {
     display: block;
 }
-.edit #edit {
-    display: none;
-}
+
 .edit #source {
     padding: 0px;
     height: 598px;
@@ -121,12 +166,13 @@ body.binary {
     font-family: var(--font2);
     font-size: 10pt;
     background-color:white;
-    display: block;
+    display: var(--displaySource);
     height: 594px;
 }
 
 #source .comment {
     color: green;
+	font-weight: 550;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;  
@@ -170,18 +216,15 @@ body.binary {
 }
 #processor {
     display: block;
-    width: 300px;
+    width: var(--processorWidth);
     position: absolute;
-    left: 350px;
-    top: 0px;
+    left: var(--processorLeft);
+    top: var(--processorTop);
     height: 100%;
 }
 
-#processor .title {
-    display: block;
-}
     #registers {
-        display: block;
+        display: var(--displayRegisters);
         position: absolute;
     }
     #registers .title {
@@ -244,7 +287,7 @@ body.binary {
      }
 
      .instruction {
-         display: block;
+         display: var(--displayInstruction);
          position: absolute;
          width: 200px;
          top: 160px;
@@ -269,7 +312,7 @@ body.binary {
     }
 
      .counter {
-         display: block;
+         display: var(--displayCounter);
          position: absolute;
          width: 140px;
          top: 120px;
@@ -314,6 +357,14 @@ body.binary {
 }
 .paused .fa-gear#static {
     display: inline-block;
+}
+
+button#step {
+    display: var(--displayStep);
+}
+
+button#slow {
+    display: var(--displaySlow);
 }
 
 /* Running modes button enabling */
@@ -372,13 +423,13 @@ button img {
 #io {
     display: block;
     position: absolute;
-    top: 290px;
-    left: 350px;
-    width: 320px;
+    top: var(--ioTop);
+    left: var(--ioLeft);
+    width: var(--ioWidth);
 }
 #pixels, #chars, #outer_console, #input, #input input {
     display: block;
-    width: var(--width3);
+    width: var(--ioWidth);
     color: black;
     font-family: var(--font2);
 }
@@ -389,7 +440,7 @@ button img {
 }
 #pixels, #chars {
     position: absolute;
-top: 136px;
+margin-top: 8px;
 height: 240px;
 }
 
@@ -416,7 +467,7 @@ height: 240px;
     height: calc(var(--pixelSize)*3);
     width: calc(var(--pixelSize)*2);
     float: left;
-    font-size: 14px;
+    font-size: var(--charFontSize);
 }
 #chars div:empty {
     background:none;
@@ -426,8 +477,9 @@ height: 240px;
 #console {
   resize: none;
   height: 61px;
-  width: 316px;
+  width: var(--ioWidth);
   border: none;
+  padding: 0px;
 }
 
 #input {
@@ -437,7 +489,7 @@ height: 240px;
   }
 
 .memory {
-    display: block;
+    display: var(--displayMemory);
     width: var(--widthMem);
     position: absolute;
     top: 0px;
@@ -502,11 +554,6 @@ float: left;
     background: white;
 }
 
-#data {
-    margin-left: 48px;
-    margin-top: 10px;
-    font-size: 12pt;
-}
 button#clear {
     float: right;
     margin-right: 0;
@@ -516,10 +563,7 @@ button#clear {
     position: absolute;
     top: 645px;
     font-family: var(--font1);
-    font-size: 12pt;
-}
-#demo {
-    color: white;
+    font-size: var(--font-size2);
 }
 .links a {
     margin-right: 20px;
