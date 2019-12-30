@@ -23,15 +23,17 @@
 //Initialise game
       MOV R3, #1084 //Initialise tail and ...
       MOV R4, #1088 //Head next to it (4 bytes = 1 word = 1 pixel)
+      STR R11,[R10+R3] //Draw 2-segment snake
+      STR R11,[R10+R4] 
       MOV R5, #body //Pointer front of queue, initialised to first data loc
       ADD R6,R5,#4 //Pointer to head address in body data (1 after tail)
       STR R3, [R5] //R3 points to the tail address
       STR R4, [R6] //R4 points to the head address
       MOV R0, #1
       BL createApple
-      STR R11,[R10+R4] //Draw new head
-      STR R0, .InterruptRegister //Now we are ready to handle interrupts 
-mainLoop: b mainLoop //Just keeps the processor running, pending interrupts
+      STR R0, .InterruptRegister //Now we are ready to handle interrupts
+mainLoop: b mainLoop //Just keeps the processor running, pending interrupts 
+//Interrupt driven
 update:
 //Switch on direction of last key
       CMP R7,#87 //W key
@@ -59,7 +61,7 @@ left: SUB R4,R4,#4 //-4 moves left one pixel
       AND R0,r4,#255
       CMP R0,#252
       BEQ gameOver
-reDraw:
+reDraw: 
 //First check if the snake would be crossing itself
       LDR R0,[R10+R4] // read, from screen, contents of next pixel
       CMP R0,R11 //If it is snake colour...
@@ -70,17 +72,17 @@ reDraw:
       MOV R6, #body //If not loop pointer back to start of body data
       STR R4, [R6] //Store the new head pixel number at the rear of the queue
       CMP R0, R12 //Check if pixel is apple colour
-      BEQ eat 
+      BEQ eat
       MOV R0, #.white
       STR R0, [R10+R3] //Paint the current tail pixel white 
-      ADD R5,R5,#4 //Increment front of queue pointer
+      ADD R5,R5,#4 //Increment front of queue pointer 
       CMP R5,#limit //Check pointer is still within end of queue data area
       BLT .+2
       MOV R5, #body //If not loop pointer back to start of body data
       LDR R3,[R5] //Retrieve pixel number for the new tail
-      B .+3 //Skip to RFE
-eat:  ADD R8,R8, #1 //Increment score
-      BL createApple 
+      BNE .+3 //Skip to RFE
+eat:  ADD R8,R8,#1 //Increment score
+      BL createApple
       STR R11,[R10+R4] //Draw new head
       RFE
 //Called by keyboard interrupt
