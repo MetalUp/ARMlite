@@ -6,12 +6,25 @@
 // Constants:
       MOV R10,#.PixelScreen
       MOV R11, #.green //Colour of snake
+
+//Set up interrupts - but don't enable yet
+   MOV R0, #update
+   STR R0, .ClockISR
+   MOV R0, #0x50
+   STR R0,.ClockInterruptFrequency
+
 //Initialise game
       MOV R3, #1084 //Initialise tail and ...
       MOV R4, #1088 //Head next to it (4 bytes = 1 word = 1 pixel)
       STR R11,[R10+R3] //Draw 2-segment snake
       STR R11,[R10+R4] 
+      MOV R0, #1
+      STR R0, .InterruptRegister //Now we are ready to handle interrupts
+
+mainLoop: b mainLoop //Just keeps the processor running, pending interrupts
+
+//Interrupt driven
 update:
       ADD R4,R4,#4 //Increment head position
       STR R11,[R10+R4] //Draw new head
-      B update
+      RFE
