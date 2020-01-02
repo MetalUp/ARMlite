@@ -4,9 +4,11 @@
 // R3 Tail position
 // R4 Head position
 // R7 ASCII value of last key pressed 
+MOV R8, #0 //Score of apples eaten
 // Constants:
       MOV R10,#.PixelScreen
       MOV R11, #.green //Colour of snake
+   MOV R12, #.red //Colour of apple
 
 //Set up interrupts - but don't enable yet
    MOV R0, #update
@@ -24,6 +26,7 @@
       STR R11,[R10+R3] //Draw 2-segment snake
       STR R11,[R10+R4] 
       MOV R0, #1
+   BL createApple
       STR R0, .InterruptRegister //Now we are ready to handle interrupts
 
 mainLoop: b mainLoop //Just keeps the processor running, pending interrupts
@@ -62,6 +65,10 @@ reDraw:
    LDR R0,[R10+R4] // read, from screen, contents of next pixel
    CMP R0,R11 	 //If it is snake colour...
    BEQ gameOver
+   CMP R0, R12   //Check if pixel is apple colour
+   BNE .+3     //Skip to RFE
+   ADD R8,R8,#1 //Increment score
+   BL createApple
       STR R11,[R10+R4] //Draw new head
       RFE
 
@@ -82,7 +89,25 @@ updateLastKey:
    MOV R7, R0
    POP {R0}
    RFE
+//Generates apple in random valid location
+createApple: push {R0,R1, LR}
+newRandom: LDR R1,.Random // gets a random 32 bit pattern
+   MOV R0, #0x3ffc // Limit random to 14 bits
+   AND R1,R1,R0 
+   MOV R0, #12284 //Max pixel number
+   CMP R1,R0
+   BGT newRandom //'Throw again'
+   LDR R0, [R10+R1] //Get intended pixel
+   CMP R0,R11 //Compare pixel to snake colour 
+   BEQ newRandom 
+   STR R12, [R10+R1] //Draw apple
+   POP {R0,R1,LR}
+   RET
 gameOver: MOV R0, #over
    STR R0,.WriteString
+   MOV R0, #score
+   STR R0,.WriteString
+   STR R8, .WriteSignedNum
    HALT //To stop program execution running into data area
 over: .ASCIZ " Game Over!\n"
+score: .ASCIZ "Your score: "
