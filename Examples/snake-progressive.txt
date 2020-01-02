@@ -58,7 +58,10 @@ left: SUB R4,R4,#4 //-4 moves left one pixel
    BEQ gameOver
 
 reDraw: 
-
+   //First check if the snake would be crossing itself
+   LDR R0,[R10+R4] // read, from screen, contents of next pixel
+   CMP R0,R11 	 //If it is snake colour...
+   BEQ gameOver
       STR R11,[R10+R4] //Draw new head
       RFE
 
