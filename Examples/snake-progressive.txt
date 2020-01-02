@@ -25,10 +25,10 @@
       MOV R4, #1088 //Head next to it (4 bytes = 1 word = 1 pixel)
       STR R11,[R10+R3] //Draw 2-segment snake
       STR R11,[R10+R4] 
-   MOV R5, #body //Pointer front of queue, initialised to first data loc
-   ADD R6,R5,#4  //Pointer to head address in body data (1 after tail)
-   STR R3, [R5]  //R3 points to the tail address
-   STR R4, [R6]  //R4 points to the head address
+      MOV R5, #body //Pointer front of queue, initialised to first data loc
+      ADD R6,R5,#4 //Pointer to head address in body data (1 after tail)
+      STR R3, [R5] //R3 points to the tail address
+      STR R4, [R6] //R4 points to the head address
       MOV R0, #1
       BL createApple
       STR R0, .InterruptRegister //Now we are ready to handle interrupts
@@ -64,18 +64,24 @@ left: SUB R4,R4,#4 //-4 moves left one pixel
 reDraw: 
 //First check if the snake would be crossing itself
       LDR R0,[R10+R4] // read, from screen, contents of next pixel
-      CMP R0,R11  //If it is snake colour...
+      CMP R0,R11 //If it is snake colour...
       BEQ gameOver
-   ADD R6,R6,#4  //Increment the back of queue pointer (by 1 word = 4 bytes)
-   STR R4, [R6]  //Store the new head pixel number at the rear of the queue
+      ADD R6,R6,#4 //Increment the back of queue pointer (by 1 word = 4 bytes)
+      CMP R6,#limit //Check pointer is still within end of queue data area
+      BLT .+2
+      MOV R6, #body //If not loop pointer back to start of body data
+      STR R4, [R6] //Store the new head pixel number at the rear of the queue
       CMP R0, R12 //Check if pixel is apple colour
-   BEQ eat
-   MOV R0, #.white
-   STR R0, [R10+R3] //Paint the current tail pixel white   
-   ADD R5,R5,#4  //Increment front of queue pointer 
-   LDR R3,[R5]  //Retrieve pixel number for the new tail
+      BEQ eat
+      MOV R0, #.white
+      STR R0, [R10+R3] //Paint the current tail pixel white 
+      ADD R5,R5,#4 //Increment front of queue pointer 
+      CMP R5,#limit //Check pointer is still within end of queue data area
+      BLT .+2
+      MOV R5, #body //If not loop pointer back to start of body data
+      LDR R3,[R5] //Retrieve pixel number for the new tail
       B .+3 //Skip to RFE
-eat:      ADD R8,R8,#1 //Increment score
+eat:  ADD R8,R8,#1 //Increment score
       BL createApple
       STR R11,[R10+R4] //Draw new head
       RFE
@@ -118,5 +124,6 @@ gameOver: MOV R0, #over
       HALT //To stop program execution running into data area
 over: .ASCIZ " Game Over!\n"
 score: .ASCIZ "Your score: "
-.ALIGN 256
-body: //The 'queue' of body segments from here onwards
+      .ALIGN 256
+body: .BLOCK 32//The 'queue' of body segments from here onwards
+limit: //1 past end of queue data
