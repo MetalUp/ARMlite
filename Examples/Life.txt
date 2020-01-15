@@ -1,86 +1,70 @@
-//Define registers
-      MOV R1, #.PixelScreen  //Screen1 address - CONSTANT
-      MOV R2, #screen2 //Screen2 address - CONSTANT
-      //R3 - Cell index
-      //R4 - Cell neighbour index
-      //R5 - Count of live neighbours
-      MOV R6, #0 //Generation count
-      MOV R9, #.black  //CONSTANT
-      MOV R10, #.white //CONSTANT
-//Set Screen2 all white     
+      MOV R1, #.PixelScreen
+      MOV R2, #screen2 
+      MOV R6, #0
+      MOV R9, #.black 
+      MOV R10, #.white 
       MOV R3, #0
-loopWhite:
-      STR R10, [R2+R3]
-      ADD R3, R3, #4  //Increment 4 bytes (1 word) per cell
-      CMP R3, #12288  //End of screen
+loopWhite: STR R10, [R2+R3]
+      ADD R3, R3, #4
+      CMP R3, #12288
       BLT loopWhite
-
-// Initialise 2nd screen with random pattern, but ignoring a 1px border
-      MOV R3, #260 //Starting 1 down & 1 in
+      MOV R3, #260
 randLoop: LDR R0, .Random
       AND R0, R0, #1
-      CMP R0, #0 //Try #9 for a more sparse initial population
+      CMP R0, #0
       BNE .+2
       STR R9, [R2+R3]
-      BL nextCellSkippingLRBorders
+      BL nextCell
       CMP R3, #12032
-      BLT randLoop  
-copyScreen2to1:  
-      MOV R3, #0
-copyLoop:
-      LDR R0, [R2+R3]
+      BLT randLoop 
+copyScreen2to1: MOV R3, #0
+copyLoop: LDR R0, [R2+R3]
       STR R0, [R1+R3]
       ADD R3, R3, #4
       CMP R3, #12288
       BLT copyLoop
-//Next generation
-      ADD R6, R6, #1 //Increment generation counter
-      MOV R3, #260 //R3 is pixel index starts 1 down, 1 in
-nextGenLoop:
-      MOV R5, #0 //Reset live neighbour count
-      SUB R4, R3, #256 //North
+      ADD R6, R6, #1 
+      MOV R3, #260
+nextGenLoop: MOV R5, #0 
+      SUB R4, R3, #256 
       BL countIfLive
-      SUB R4, R3, #252 //Northeast
+      SUB R4, R3, #252 
       BL countIfLive
-      ADD R4, R3, #4 // East 
+      ADD R4, R3, #4 
       BL countIfLive
-      ADD R4, R3, #260 // Southeast
+      ADD R4, R3, #260 
       BL countIfLive
-      ADD R4, R3, #256 //South
+      ADD R4, R3, #256
       BL countIfLive
-      ADD R4, R3, #252 //Southwest
+      ADD R4, R3, #252
       BL countIfLive
-      SUB R4, R3, #4 //West
+      SUB R4, R3, #4
       BL countIfLive
-      SUB R4, R3, #260 //Northwest
+      SUB R4, R3, #260 
       BL countIfLive
-//Now decide fate of cell
       CMP R5, #4
       BLT .+3 
-      STR R10, [R2+R3] //Cell dies (or remains empty) if 4 or more neighbours
+      STR R10, [R2+R3]
       B continue
       CMP R5, #3
       BLT .+3 
-      STR R9, [R2+R3] //Cell lives (or new one is born) if 3 neighbours
+      STR R9, [R2+R3]
       B continue
       CMP R5, #2
       BLT .+2
-      B continue //Cell remains in present state if 2 neighbours
-      STR R10, [R2+R3] //Cell dies (or remains empty) if < 2 neighbours
-continue:
-      BL nextCellSkippingLRBorders
+      B continue
+      STR R10, [R2+R3]
+continue: BL nextCell
       MOV R0, #12032
-      CMP R3, R0
+      CMP R3, R0 
       BLT nextGenLoop
       B copyScreen2to1
-//Subroutines:
-//Increment count in R5 if neighbour (R4) is live
-countIfLive:  LDR R0, [R1+R4]  
+countIfLive: LDR R0, [R1+R4] 
       CMP R0, R10 //White
       BEQ .+2
       ADD R5, R5, #1
       RET
-nextCellSkippingLRBorders: //R3 pixel index, R0 used locally
+nextCell:
       ADD R3, R3, #4
       AND R0, R3, #255
       CMP R0, #0
@@ -88,7 +72,6 @@ nextCellSkippingLRBorders: //R3 pixel index, R0 used locally
       CMP R0, #252
       BEQ .-5
       RET
-
       HALT
       .ALIGN 1024
 screen2: 0

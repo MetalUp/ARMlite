@@ -1,0 +1,294 @@
+	MOV R2,#2
+	STR R2,.Resolution
+	LDR R2,.PixelAreaSize		// test correct setup
+	CMP R2,#12288
+	BEQ .+2
+	HALT		// wrong pixel size
+	MOV R11, #.blue //Constant
+	MOV R12, #.white //Constant
+	MOV R1, #screen2 
+	ADD R3, R1, #49152 //End
+clearPixel:
+	STR R12, [R1]	// set everything white
+	ADD R1, R1, #4
+	CMP R1, R3
+	BLT clearPixel
+// Initialise 2nd screen with random pattern
+	MOV R2, #screen2 //1st pixel
+	ADD R3, R2, #49152 //End
+randLoop: LDR R0, .Random
+	AND R0, R0, #9
+	CMP R0, #0
+	BNE skip		// only need to set blacks
+	STR R11, [R2]	// set black
+skip:
+	ADD R2, R2, #4
+	CMP R2, R3
+	BLT randLoop
+copyScreen2to1: 
+	MOV R1, #.PixelScreen
+	MOV R2, #screen2
+	ADD R3, R1, #49152
+copyLoop:
+	LDR R0, [R2]
+	STR R0, [R1]
+	ADD R1, R1, #4
+	ADD R2, R2, #4
+	CMP R1, R3
+	BLT copyLoop
+//Next generation
+	MOV R3, #0 //R3 is cell offset, 0 to 49152 (incr by 4)
+nextGenLoop:
+	BL countBlock		// count neighbours in R6
+//Now decide fate of cell
+	MOV R2, #screen2
+	ADD R2, R2, R3
+	CMP R6, #4
+	BLT .+3 
+	STR R12, [R2] //Cell dies (or remains empty) if 4 or more neighbours
+	B continue
+	CMP R6, #3
+	BLT .+3 
+	STR R11, [R2] //Cell born (or remains) if 3 or 4 neighbours
+	B continue
+	CMP R6, #2
+	BEQ continue  //Cell remains in present state if 2 neighbours
+	STR R12, [R2] //Cell dies (or remains empty) if < 2 neighbours
+continue:
+	ADD R3,R3, #4
+	CMP R3, #49152
+	BLT nextGenLoop
+	B copyScreen2to1
+
+// R3 is pixel index, R6 return count
+// R11, R12 do not change, R5 used by countIfLive()
+// we use R1, R4 and R10 (as temp for LR!!!!)
+countBlock:
+	MOV R10,LR
+	MOV R6, #0 			//Reset live count
+	MOV R1, #.PixelScreen
+	ADD R1, R1, R3
+	AND R4,R3,#0x1fc	// index in row (bottom 2 bits 0 anyway)
+	CMP R3,#512
+	BLT topRow			// remove all the special cases
+	CMP R3,#48640		// is 0xbe00 so fits in 8 bits
+	BEQ leftBot			// because BGE not in AQA set
+	BGT botRow			// and 0xbdfc is > 8 bits
+	CMP R4,#0
+	BEQ	leftCol
+	CMP R4,#508
+	BEQ rightCol
+	// now can do original count neighbours
+	SUB R1, R1, #512 //North 
+	BL countIfLive
+	ADD R1, R1, #4 //Northeast
+	BL countIfLive
+	ADD R1, R1, #512 // East
+	BL countIfLive
+	ADD R1, R1, #512 // Southeast
+	BL countIfLive
+	SUB R1, R1, #4 //South
+	BL countIfLive
+	SUB R1, R1, #4 //Southwest
+	BL countIfLive
+	SUB R1, R1, #512 //West
+	BL countIfLive
+	SUB R1, R1, #512 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+spare: // to improve speed maybe optimise the general case
+	LDR R5, [R1-512]		//North
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1-508]		//Northeast
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1+4]		//East
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1+516]	//Southeast
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1+512]	//South
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1+508]	//Southwest
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1-4]		//West
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	LDR R5, [R1-516]		//Northwest
+	CMP R5, R12
+	BEQ .+2
+	ADD R6, R6, #1
+	MOV PC,R10	//RET      
+//
+rightCol:	// but not top or bottom
+	SUB R1, R1, #512 //North 
+	BL countIfLive
+	SUB R1, R1, #508 //Northeast
+	BL countIfLive
+	ADD R1, R1, #512 // East
+	BL countIfLive
+	ADD R1, R1, #512 // Southeast
+	BL countIfLive
+	ADD R1, R1, #508 //South
+	BL countIfLive
+	SUB R1, R1, #4 //Southwest
+	BL countIfLive
+	SUB R1, R1, #512 //West
+	BL countIfLive
+	SUB R1, R1, #512 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+leftCol:	// but not top or bottom
+	SUB R1, R1, #512 //North 
+	BL countIfLive
+	ADD R1, R1, #4 //Northeast
+	BL countIfLive
+	ADD R1, R1, #512 // East
+	BL countIfLive
+	ADD R1, R1, #512 // Southeast
+	BL countIfLive
+	SUB R1, R1, #4 //South
+	BL countIfLive
+	ADD R1, R1, #508 //Southwest
+	BL countIfLive
+	SUB R1, R1, #512 //West
+	BL countIfLive
+	SUB R1, R1, #512 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+topRow:
+	CMP R4,#0	// note R3=R4
+	BEQ	leftTop
+	CMP R4,#508
+	BEQ rightTop
+	// now top but not sides
+	ADD R1, R1, #48640 //North 
+	BL countIfLive
+	ADD R1, R1, #4 //Northeast
+	BL countIfLive
+	SUB R1, R1, #48640 // East
+	BL countIfLive
+	ADD R1, R1, #512 // Southeast
+	BL countIfLive
+	SUB R1, R1, #4 //South
+	BL countIfLive
+	SUB R1, R1, #4 //Southwest
+	BL countIfLive
+	SUB R1, R1, #512 //West
+	BL countIfLive
+	ADD R1, R1, #48640 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+botRow:		// removed leftBot already
+	CMP R4,#508
+	BEQ rightBot
+	SUB R1, R1, #512 //North 
+	BL countIfLive
+	ADD R1, R1, #4 //Northeast
+	BL countIfLive
+	ADD R1, R1, #512 // East
+	BL countIfLive
+	SUB R1, R1, #48640 // Southeast
+	BL countIfLive
+	SUB R1, R1, #4 //South
+	BL countIfLive
+	SUB R1, R1, #4 //Southwest
+	BL countIfLive
+	ADD R1, R1, #48640 //West
+	BL countIfLive
+	SUB R1, R1, #512 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+//There must be a way to improve this but I'm not short of space! 
+leftTop:
+	ADD R1, R1, #48640 //North 
+	BL countIfLive
+	ADD R1, R1, #4 //Northeast
+	BL countIfLive
+	SUB R1, R1, #48640 // East
+	BL countIfLive
+	ADD R1, R1, #512 // Southeast
+	BL countIfLive
+	SUB R1, R1, #4 //South
+	BL countIfLive
+	ADD R1, R1, #508 //Southwest
+	BL countIfLive
+	SUB R1, R1, #512 //West
+	BL countIfLive
+	ADD R1, R1, #48640 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+rightTop:
+	ADD R1, R1, #48640 //North 
+	BL countIfLive
+	SUB R1, R1, #508 //Northeast
+	BL countIfLive
+	MOV R1, #.PixelScreen // East (SUB is > 8 bits)
+	BL countIfLive
+	ADD R1, R1, #512 // Southeast
+	BL countIfLive
+	ADD R1, R1, #508 //South
+	BL countIfLive
+	SUB R1, R1, #4 //Southwest
+	BL countIfLive
+	SUB R1, R1, #512 //West
+	BL countIfLive
+	ADD R1, R1, #48640 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+leftBot:
+	SUB R1, R1, #512 //North 
+	BL countIfLive
+	ADD R1, R1, #4 //Northeast
+	BL countIfLive
+	ADD R1, R1, #512 // East
+	BL countIfLive
+	SUB R1, R1, #48640 // Southeast
+	BL countIfLive
+	SUB R1, R1, #4 //South (=#.PixelScreen)
+	BL countIfLive
+	ADD R1, R1, #508 //Southwest
+	BL countIfLive
+	ADD R1, R1, #48640 //West
+	BL countIfLive
+	SUB R1, R1, #512 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+rightBot:
+	SUB R1, R1, #512 //North 
+	BL countIfLive
+	SUB R1, R1, #508 //Northeast
+	BL countIfLive
+	ADD R1, R1, #512 // East
+	BL countIfLive
+	SUB R1, R1, #48640 // Southeast (=#.PixelScreen)
+	BL countIfLive
+	ADD R1, R1, #508 //South
+	BL countIfLive	
+	SUB R1, R1, #4 //Southwest
+	BL countIfLive
+	ADD R1, R1, #48640 //West
+	BL countIfLive
+	SUB R1, R1, #512 //Northwest
+	BL countIfLive
+	MOV PC,R10	//RET
+//Subroutines
+countIfLive: LDR R5, [R1] //Sub
+      CMP R5, R12
+      BEQ .+2
+      ADD R6, R6, #1
+      RET
+      HALT
+      .ALIGN 1024
+screen2: .DATA
